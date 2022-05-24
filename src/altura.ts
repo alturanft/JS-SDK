@@ -1,18 +1,12 @@
-import { SortDirection } from './types';
+import { ApiCall } from './apiCall';
+import { AlturaUser } from './types';
+import { userFromJson } from './utils';
 
 export class Altura {
-  private apiKey: string | undefined;
+  apiCall: ApiCall;
 
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
-  }
-
-  /**
-   * Check if server is running.
-   * @returns Altura apiKey.
-   */
-  public ping(): string {
-    return `${this.apiKey}`;
+  constructor(apiKey: string, logger?: (arg: string) => void) {
+    this.apiCall = new ApiCall({ apiKey }, logger || ((arg: string) => arg));
   }
 
   /**
@@ -23,12 +17,25 @@ export class Altura {
    * @param sortDir Choose to sort in ascending(asc) or descending(desc) order
    * @returns An array of users
    */
-  public getUsers(
-    perPage: number = 24,
-    page: number = 1,
-    sortBy: String = 'name',
-    sortDir: SortDirection = SortDirection.desc,
-  ): string {
-    return 'getUsers';
+  public async getUsers(
+    perPage = 24,
+    page = 1,
+    sortBy = 'name',
+    sortDir: 'desc' | 'asc' = 'desc',
+  ): Promise<{ users: AlturaUser[]; count: number }> {
+    const json = await this.apiCall.get<{ users: AlturaUser[]; count: number }>(
+      'user',
+      {
+        perPage,
+        page,
+        sortBy,
+        sortDir,
+      },
+    );
+
+    return {
+      users: json.users.map((j) => userFromJson(j)),
+      count: json.count,
+    };
   }
 }

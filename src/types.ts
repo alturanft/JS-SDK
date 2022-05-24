@@ -1,12 +1,7 @@
-export interface IUser {
+export interface AlturaUser {
   address: string;
   name: string;
   bio: string;
   socialLink: string;
   profilePicUrl: string;
-}
-
-export enum SortDirection {
-  'desc',
-  'asc',
 }
