@@ -1,0 +1,45 @@
+{
+  "name": "altura-js",
+  "version": "1.0.0",
+  "description": "Javascript SDK for the Altura NFT Marketplace",
+  "license": "MIT",
+  "author": "Altura Developers",
+  "homepage": "https://docs.v2.alturanft.com/api-reference",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "altura",
+    "nft",
+    "marketplace",
+    "node",
+    "sdk",
+    "smart-contracts",
+    "javascript",
+    "ethereum",
+    "binance",
+    "crypto"
+  ],
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "jest": "^28.1.0",
+    "prettier": "^2.6.2",
+    "ts-jest": "^28.0.2",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.6.4"
+  }
+}
