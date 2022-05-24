@@ -44,11 +44,7 @@ export class ApiCall {
    * @param body Data to send. Will be JSON.stringified
    * @param opts RequestInit opts, similar to Fetch API.
    */
-  private async post<T>(
-    apiPath: string,
-    body?: object,
-    opts: RequestInit = {},
-  ): Promise<T> {
+  private async post<T>(apiPath: string, body?: object, opts: RequestInit = {}): Promise<T> {
     const response = await this._fetch(apiPath, {
       method: 'POST',
       body: body ? JSON.stringify(body) : undefined,
@@ -67,9 +63,7 @@ export class ApiCall {
     const apiKey = this.apiKey;
     const finalUrl = apiBase + apiPah;
 
-    this.logger(
-      `Sending request: ${finalUrl} ${JSON.stringify(opts).slice(0, 100)}...`,
-    );
+    this.logger(`Sending request: ${finalUrl} ${JSON.stringify(opts).slice(0, 100)}...`);
 
     return fetch(finalUrl, opts).then(async (res) => {
       return this._handleApiResponse(res);
@@ -96,22 +90,16 @@ export class ApiCall {
     switch (response.status) {
       case 400:
         errorMessage =
-          result && result.errors
-            ? result.errors.join(', ')
-            : `Invalid request: ${JSON.stringify(result)}`;
+          result && result.errors ? result.errors.join(', ') : `Invalid request: ${JSON.stringify(result)}`;
         break;
 
       case 401:
       case 403:
-        errorMessage = `Unauthorized. Full message was '${JSON.stringify(
-          result,
-        )}'`;
+        errorMessage = `Unauthorized. Full message was '${JSON.stringify(result)}'`;
         break;
 
       case 404:
-        errorMessage = `Not found. Full message was '${JSON.stringify(
-          result,
-        )}'`;
+        errorMessage = `Not found. Full message was '${JSON.stringify(result)}'`;
         break;
 
       case 500:
