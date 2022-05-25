@@ -9,7 +9,7 @@ export class ApiCall {
   /**
    * Base URL for the API
    */
-  apiBaseUrl = 'https://app.alturanft.com/api/v2/';
+  private apiBaseUrl = 'https://app.alturanft.com/api/v2/';
   /**
    * ApiKey generated from Developer portal
    */
@@ -17,7 +17,7 @@ export class ApiCall {
   /**
    * Logger function to use when debugging
    */
-  public logger: (arg: string) => void;
+  private logger: (arg: string) => void;
 
   constructor(config: IApiCallConfig, logger?: (arg: string) => void) {
     this.apiKey = config.apiKey;
@@ -44,7 +44,7 @@ export class ApiCall {
    * @param body Data to send. Will be JSON.stringified
    * @param opts RequestInit opts, similar to Fetch API.
    */
-  private async post<T>(apiPath: string, body?: object, opts: RequestInit = {}): Promise<T> {
+  public async post<T>(apiPath: string, body?: object, opts: RequestInit = {}): Promise<T> {
     const response = await this._fetch(apiPath, {
       method: 'POST',
       body: body ? JSON.stringify(body) : undefined,
