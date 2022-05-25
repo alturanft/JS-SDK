@@ -102,22 +102,16 @@ export class AlturaItem {
 
   /**
    *
-   * @param address
-   * @param tokenId
    * @param perPage
    * @param page
    * @param includeListed
    * @returns
    */
-  public async getHolders(
-    address: string,
-    tokenId: number,
-    params?: {
-      perPage?: number;
-      page?: number;
-      includeListed?: boolean;
-    },
-  ): Promise<{ holders: IAlturaUser[]; count: number }> {
+  public async getHolders(params?: {
+    perPage?: number;
+    page?: number;
+    includeListed?: boolean;
+  }): Promise<{ holders: IAlturaUser[]; count: number }> {
     // Implement code here.
     return {
       holders: [],
@@ -127,20 +121,11 @@ export class AlturaItem {
 
   /**
    *
-   * @param address
-   * @param tokenId
    * @param perPage
    * @param page
    * @returns
    */
-  public async getHistory(
-    address: string,
-    tokenId: number,
-    params?: {
-      perPage?: number;
-      page?: number;
-    },
-  ): Promise<{ events: IAlturaEvevnt[] }> {
+  public async getHistory(params?: { perPage?: number; page?: number }): Promise<{ events: IAlturaEvevnt[] }> {
     // Implement code here
     return {
       events: [],
@@ -149,15 +134,11 @@ export class AlturaItem {
 
   /**
    *
-   * @param addresss
-   * @param tokenId
    * @param propertyName
    * @param propertyValue
    * @returns
    */
   public async updateProperty(
-    addresss: string,
-    tokenId: number,
     propertyName: string,
     propertyValue: string,
   ): Promise<{
@@ -169,16 +150,10 @@ export class AlturaItem {
 
   /**
    *
-   * @param address
-   * @param tokenId
    * @param imageIndex
    * @returns
    */
-  public async updatePrimaryImage(
-    address: string,
-    tokenId: number,
-    imageIndex: number,
-  ): Promise<{
+  public async updatePrimaryImage(imageIndex: number): Promise<{
     // return type
   }> {
     // Implement code here

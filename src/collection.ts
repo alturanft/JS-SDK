@@ -62,14 +62,12 @@ export class AlturaCollection {
 
   /**
    *
-   * @param address
    * @param name
    * @param description
    * @param website
    * @returns
    */
   public async update(
-    address: string,
     name?: string,
     description?: string,
     website?: string,
