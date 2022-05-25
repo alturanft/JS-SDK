@@ -6,7 +6,7 @@ export class AlturaCollection {
   _description: string;
   _genre: string;
   _image: string;
-  _imageUrl: string;
+  _imageUrl: string | undefined;
   _ownerAddress: string;
   _slug: string;
   _uri: string;
@@ -26,7 +26,7 @@ export class AlturaCollection {
     description: string,
     genre: string,
     image: string,
-    imageUrl: string,
+    imageUrl: string | undefined,
     ownerAddress: string,
     slug: string,
     uri: string,
@@ -58,5 +58,25 @@ export class AlturaCollection {
     this._volume30d = volume30d;
     this._volumeall = volumeall;
     this.apiCall = apiCall;
+  }
+
+  /**
+   *
+   * @param address
+   * @param name
+   * @param description
+   * @param website
+   * @returns
+   */
+  public async update(
+    address: string,
+    name?: string,
+    description?: string,
+    website?: string,
+  ): Promise<{
+    // return type
+  }> {
+    // Implement code here
+    return {};
   }
 }

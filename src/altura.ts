@@ -179,4 +179,75 @@ export class Altura {
       count: json.count,
     };
   }
+
+  /**
+   * Takes any query and returns an array of collections that match that query
+   * @param perPage The number of collections to show in one page (default: 24)
+   * @param page The offset for returned collections. Calculated as (page - 1) * perpage (default: 1)
+   * @param sortBy The field to sort the collections by (any field in the collection schema may be used) (default: "name")
+   * @param sortDir Choose to sort in ascending(asc) or descending(desc) order (default: 'desc')
+   */
+  public async getCollections(params?: {
+    perPage?: number;
+    page?: number;
+    sortBy?: string;
+    sortDir?: 'desc' | 'asc';
+  }): Promise<{ collections: IAlturaCollection[]; count: number }> {
+    const _perPage = params && params.perPage ? params.perPage : 24;
+    const _page = params && params.page ? params.page : 1;
+    const _sortBy = params && params.sortBy ? params.sortBy : 'mintDate';
+    const _sortDir = params && params.sortDir ? params.sortDir : 'desc';
+
+    const json = await this.apiCall.get<{ collections: IAlturaCollection[]; count: number }>('collection', {
+      perPage: _perPage,
+      page: _page,
+      sortBy: _sortBy,
+      sortDir: _sortDir,
+    });
+
+    return {
+      collections: json.collections.map((c) => collectionFromJson(c)),
+      count: json.count,
+    };
+  }
+
+  /**
+   *
+   * @param address
+   * @param tokenId
+   * @param amount
+   * @param to
+   * @returns
+   */
+  public async transferItem(
+    address: string,
+    tokenId: number | number[],
+    amount: number | number[],
+    to: string,
+  ): Promise<{ txHash: string }> {
+    // Implement code here
+    return {
+      txHash: '',
+    };
+  }
+
+  /**
+   *
+   * @param addresss
+   * @param tokenId
+   * @param amount
+   * @param to
+   * @returns
+   */
+  public async mintAdditionalSupply(
+    addresss: string,
+    tokenId: number,
+    amount: number,
+    to: string,
+  ): Promise<{ txHash: string }> {
+    // Implement code here
+    return {
+      txHash: '',
+    };
+  }
 }

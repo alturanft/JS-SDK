@@ -20,13 +20,13 @@ export interface IAlturaItem {
   description: string;
   image: string;
   imageUrl: string;
-  primaryImageIndex: number;
+  primaryImageIndex: number | undefined;
   fileType: string;
   isVideo: boolean;
   creatorAddress: string;
-  like: number;
+  like: number | undefined;
   views: number;
-  mintDate: string;
+  mintDate: string | undefined;
   royalty: number;
   nsfw: boolean;
   supply: number;
@@ -63,4 +63,19 @@ export interface IAlturaCollection {
   volume_1w: number;
   volume_30d: number;
   volume_all: number;
+}
+
+export interface IAlturaEvevnt {
+  id: string;
+  amount: string;
+  blockNumber: number;
+  chainId: number;
+  event: string;
+  from: string;
+  itemCollection: string;
+  itemRef: string;
+  timestamp: number;
+  to: string;
+  tokenId: number;
+  transactionHash: string;
 }

@@ -1,5 +1,5 @@
 import { ApiCall } from './apiCall';
-import { IItemProperty } from './types';
+import { IAlturaEvevnt, IAlturaUser, IItemProperty } from './types';
 
 export class AlturaItem {
   _collectionAddress: string;
@@ -9,13 +9,13 @@ export class AlturaItem {
   _description: string;
   _image: string;
   _imageUrl: string;
-  _primaryImageIndex: number;
+  _primaryImageIndex: number | undefined;
   _fileType: string;
   _isVideo: boolean;
   _creatorAddress: string;
-  _like: number;
+  _like: number | undefined;
   _views: number;
-  _mintDate: string;
+  _mintDate: string | undefined;
   _royalty: number;
   _nsfw: boolean;
   _supply: number;
@@ -42,13 +42,13 @@ export class AlturaItem {
     description: string,
     image: string,
     imageUrl: string,
-    primaryImageIndex: number,
+    primaryImageIndex: number | undefined,
     fileType: string,
     isVideo: boolean,
     creatorAddress: string,
-    like: number,
+    like: number | undefined,
     views: number,
-    mintDate: string,
+    mintDate: string | undefined,
     royalty: number,
     nsfw: boolean,
     supply: number,
@@ -128,7 +128,7 @@ export class AlturaItem {
     return this._imageUrl;
   }
 
-  get primaryImageIndex(): number {
+  get primaryImageIndex(): number | undefined {
     return this._primaryImageIndex;
   }
 
@@ -144,7 +144,7 @@ export class AlturaItem {
     return this._creatorAddress;
   }
 
-  get like(): number {
+  get like(): number | undefined {
     return this._like;
   }
 
@@ -152,7 +152,7 @@ export class AlturaItem {
     return this._views;
   }
 
-  get mintDate(): string {
+  get mintDate(): string | undefined {
     return this._mintDate;
   }
 
@@ -218,5 +218,90 @@ export class AlturaItem {
 
   get slug(): string {
     return this._slug;
+  }
+
+  /**
+   *
+   * @param address
+   * @param tokenId
+   * @param perPage
+   * @param page
+   * @param includeListed
+   * @returns
+   */
+  public async getHolders(
+    address: string,
+    tokenId: number,
+    params?: {
+      perPage?: number;
+      page?: number;
+      includeListed?: boolean;
+    },
+  ): Promise<{ holders: IAlturaUser[]; count: number }> {
+    // Implement code here.
+    return {
+      holders: [],
+      count: 0,
+    };
+  }
+
+  /**
+   *
+   * @param address
+   * @param tokenId
+   * @param perPage
+   * @param page
+   * @returns
+   */
+  public async getHistory(
+    address: string,
+    tokenId: number,
+    params?: {
+      perPage?: number;
+      page?: number;
+    },
+  ): Promise<{ events: IAlturaEvevnt[] }> {
+    // Implement code here
+    return {
+      events: [],
+    };
+  }
+
+  /**
+   *
+   * @param addresss
+   * @param tokenId
+   * @param propertyName
+   * @param propertyValue
+   * @returns
+   */
+  public async updateProperty(
+    addresss: string,
+    tokenId: number,
+    propertyName: string,
+    propertyValue: string,
+  ): Promise<{
+    // return type
+  }> {
+    // Implement code here
+    return {};
+  }
+
+  /**
+   *
+   * @param address
+   * @param tokenId
+   * @param imageIndex
+   * @returns
+   */
+  public async updatePrimaryImage(
+    address: string,
+    tokenId: number,
+    imageIndex: number,
+  ): Promise<{
+    // return type
+  }> {
+    // Implement code here
+    return {};
   }
 }
