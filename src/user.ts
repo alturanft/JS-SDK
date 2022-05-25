@@ -7,7 +7,7 @@ export class AlturaUser {
   _bio: string;
   _profilePicUrl: string;
   _socialLink: string;
-  apiCall: ApiCall;
+  private apiCall: ApiCall;
 
   constructor(address: string, name: string, bio: string, profilePicUrl: string, socialLink: string, apiCall: ApiCall) {
     this._address = address;
@@ -16,26 +16,6 @@ export class AlturaUser {
     this._profilePicUrl = profilePicUrl;
     this._bio = bio;
     this.apiCall = apiCall;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  get address(): string {
-    return this._address;
-  }
-
-  get profilePicUrl(): string {
-    return this._profilePicUrl;
-  }
-
-  get bio(): string {
-    return this._bio;
-  }
-
-  get socialLink(): string {
-    return this._socialLink;
   }
 
   /**

@@ -18,7 +18,7 @@ export class AlturaCollection {
   _volume1w: number;
   _volume30d: number;
   _volumeall: number;
-  apiCall: ApiCall;
+  private apiCall: ApiCall;
 
   constructor(
     address: string,

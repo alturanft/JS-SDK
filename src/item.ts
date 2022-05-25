@@ -32,7 +32,7 @@ export class AlturaItem {
   _isVerified: boolean;
   _website: string;
   _slug: string;
-  apiCall: ApiCall;
+  private apiCall: ApiCall;
 
   constructor(
     collectionAddress: string,
@@ -98,126 +98,6 @@ export class AlturaItem {
     this._website = website;
     this._slug = slug;
     this.apiCall = apiCall;
-  }
-
-  get collectionAddress(): string {
-    return this._collectionAddress;
-  }
-
-  get tokenId(): number {
-    return this._tokenId;
-  }
-
-  get chainId(): number {
-    return this._chainId;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  get description(): string {
-    return this._description;
-  }
-
-  get image(): string {
-    return this._image;
-  }
-
-  get imageUrl(): string {
-    return this._imageUrl;
-  }
-
-  get primaryImageIndex(): number | undefined {
-    return this._primaryImageIndex;
-  }
-
-  get fileType(): string {
-    return this._fileType;
-  }
-
-  get isVideo(): boolean {
-    return this._isVideo;
-  }
-
-  get creatorAddress(): string {
-    return this._creatorAddress;
-  }
-
-  get like(): number | undefined {
-    return this._like;
-  }
-
-  get views(): number {
-    return this._views;
-  }
-
-  get mintDate(): string | undefined {
-    return this._mintDate;
-  }
-
-  get royalty(): number {
-    return this._royalty;
-  }
-
-  get nsfw(): boolean {
-    return this._nsfw;
-  }
-
-  get supply(): number {
-    return this._supply;
-  }
-
-  get maxSupply(): number {
-    return this._maxSupply;
-  }
-
-  get stackable(): boolean {
-    return this._stackable;
-  }
-
-  get properties(): IItemProperty[] {
-    return this._properties;
-  }
-
-  get isListed(): boolean {
-    return this._isListed;
-  }
-
-  get holders(): number {
-    return this._holders;
-  }
-
-  get hasUnlockableContent(): boolean {
-    return this._hasUnlockableContent;
-  }
-
-  get unlockableContent(): string | undefined {
-    return this._unlockableContent;
-  }
-
-  get creatorName(): string {
-    return this._creatorName;
-  }
-
-  get collectionName(): string {
-    return this._collectionName;
-  }
-
-  get uri(): string {
-    return this._uri;
-  }
-
-  get isVerified(): boolean {
-    return this._isVerified;
-  }
-
-  get website(): string {
-    return this._website;
-  }
-
-  get slug(): string {
-    return this._slug;
   }
 
   /**
