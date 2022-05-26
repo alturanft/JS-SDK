@@ -41,11 +41,14 @@ export class ApiCall {
   /**
    * POST JSON data to API.
    * @param apiPath Path to URL endpoint under API
+   * @param query Data for url query. Will be stringified using QueryString
    * @param body Data to send. Will be JSON.stringified
    * @param opts RequestInit opts, similar to Fetch API.
    */
-  public async post<T>(apiPath: string, body?: object, opts: RequestInit = {}): Promise<T> {
-    const response = await this._fetch(apiPath, {
+  public async post<T>(apiPath: string, query: object = {}, body?: object, opts: RequestInit = {}): Promise<T> {
+    const qs = QueryString.stringify(query);
+    const url = `${apiPath}?${qs}`;
+    const response = await this._fetch(url, {
       method: 'POST',
       body: body ? JSON.stringify(body) : undefined,
       ...opts,

@@ -221,14 +221,30 @@ export class Altura {
    */
   public async transferItem(
     collectionAddress: string,
-    tokenId: number | number[],
-    amount: number | number[],
+    tokenId: number,
+    amount: number,
     to: string,
   ): Promise<{ txHash: string }> {
-    // Implement code here
-    return {
-      txHash: '',
-    };
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/transfer',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenId, amount, to },
+    );
+    return { txHash: data.txHash };
+  }
+
+  public async transferItems(
+    collectionAddress: string,
+    tokenIds: number[],
+    amounts: number[],
+    to: string,
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/transfer',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenIds, amounts, to },
+    );
+    return { txHash: data.txHash };
   }
 
   /**

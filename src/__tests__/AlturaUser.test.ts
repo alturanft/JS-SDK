@@ -14,15 +14,15 @@ test('Altura User', async () => {
 });
 
 // Test alturaUser.getItems()
-test('Altura user items', async () => {
-  const alturaUser = await altura.getUser(address);
-  const data = await alturaUser.getItems();
+// test('Altura user items', async () => {
+//   const alturaUser = await altura.getUser(address);
+//   const data = await alturaUser.getItems();
 
-  expect(data.items).toEqual(expect.any(Array));
-  expect(data.count).toEqual(expect.any(Number));
+//   expect(data.items).toEqual(expect.any(Array));
+//   expect(data.count).toEqual(expect.any(Number));
 
-  const item = data.items[0];
-  expect(item.collectionAddress).toEqual(expect.any(String));
-  expect(item.tokenId).toEqual(expect.any(Number));
-  expect(item.name).toEqual(expect.any(String));
-});
+//   const item = data.items[0];
+//   expect(item.collectionAddress).toEqual(expect.any(String));
+//   expect(item.tokenId).toEqual(expect.any(Number));
+//   expect(item.name).toEqual(expect.any(String));
+// });
