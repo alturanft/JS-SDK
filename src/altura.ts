@@ -128,7 +128,7 @@ export class Altura {
     const _page = params && params.page ? params.page : 1;
     const _sortBy = params && params.sortBy ? params.sortBy : 'name';
     const _sortDir = params && params.sortDir ? params.sortDir : 'desc';
-    const json = await this.apiCall.get<{ users: IAlturaUser[]; count: number }>('user', {
+    const json = await this.apiCall.get<{ users: Object[]; count: number }>('user', {
       perPage: _perPage,
       page: _page,
       sortBy: _sortBy,
@@ -213,14 +213,14 @@ export class Altura {
 
   /**
    *
-   * @param address
+   * @param collectionAddress
    * @param tokenId
    * @param amount
    * @param to
    * @returns
    */
   public async transferItem(
-    address: string,
+    collectionAddress: string,
     tokenId: number | number[],
     amount: number | number[],
     to: string,
