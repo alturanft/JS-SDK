@@ -157,7 +157,7 @@ export class Altura {
     sortDir?: 'desc' | 'asc';
     slim?: boolean;
     stateOnly?: boolean;
-  }): Promise<{ items: IAlturaItem[]; count: number }> {
+  }): Promise<{ items: object[]; count: number }> {
     const _perPage = params && params.perPage ? params.perPage : 24;
     const _page = params && params.page ? params.page : 1;
     const _sortBy = params && params.sortBy ? params.sortBy : 'mintDate';

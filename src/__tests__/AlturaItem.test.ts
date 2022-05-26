@@ -2,10 +2,7 @@ import { ConsoleHandler, Logger, LogLevel } from 'logging-library';
 import { Altura } from '../altura';
 
 const logger = new Logger().addHandler(new ConsoleHandler(LogLevel.DEBUG));
-const altura = new Altura('123456789', (arg: string) => logger.debug(arg));
-
-const collectionAddress = '0x8adbfe4b2430baf33544f63a9958fa50247feaa0';
-const tokenId = 4;
+const altura = new Altura('0000000-0000000-0000000-0000000', (arg: string) => logger.debug(arg));
 
 // test('Altura Item', async () => {
 //   const alturaItem = await altura.getItem(collectionAddress, tokenId);
