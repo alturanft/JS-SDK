@@ -1,5 +1,6 @@
 import { ApiCall } from './apiCall';
-import { IAlturaEvevnt, IAlturaUser, IItemProperty } from './types';
+import { IAlturaEvevnt, IAlturaItem, IAlturaUser, IItemProperty } from './types';
+import { eventFromJson, itemFromJson, userFromJson } from './utils';
 
 export class AlturaItem {
   _collectionAddress: string;
@@ -101,62 +102,91 @@ export class AlturaItem {
   }
 
   /**
-   *
-   * @param perPage
-   * @param page
-   * @param includeListed
-   * @returns
+   * returns an item's holders and their balances
+   * @param perPage The number of users to return (default: 24)
+   * @param page The offset for returned users. Calculated as (page - 1) * perPage (default: 1)
+   * @param includeListed If user's who have item listed should be included
+   * (listed NFTs are still owned by the user, however on the blockchain they are held by a marketplace smart contract)
+   * (default: true)
    */
   public async getHolders(params?: {
     perPage?: number;
     page?: number;
     includeListed?: boolean;
   }): Promise<{ holders: IAlturaUser[]; count: number }> {
-    // Implement code here.
+    const query = {
+      perPage: params && params.perPage ? params.perPage : 24,
+      page: params && params.page ? params.page : 1,
+      includeListed: params && params.includeListed ? params.includeListed : true,
+    };
+
+    const data = await this.apiCall.get<{ holders: object[]; count: number }>(
+      `item/holders/${this._collectionAddress}/${this._tokenId}`,
+      query,
+    );
+
     return {
-      holders: [],
-      count: 0,
+      holders: data.holders.map((h) => userFromJson(h)),
+      count: data.count,
     };
   }
 
   /**
-   *
-   * @param perPage
-   * @param page
-   * @returns
+   * Returns the blockchain history of an item
+   * @param perPage The number of users to return (default: 24)
+   * @param page The offset for returned users. Calculated as (page -1) * perPage (default: 1)
    */
   public async getHistory(params?: { perPage?: number; page?: number }): Promise<{ events: IAlturaEvevnt[] }> {
-    // Implement code here
+    const query = {
+      perPage: params && params.perPage ? params.perPage : 24,
+      page: params && params.page ? params.page : 1,
+    };
+
+    const data = await this.apiCall.get<{ events: object[] }>(
+      `item/events/${this._collectionAddress}/${this._tokenId}`,
+      query,
+    );
     return {
-      events: [],
+      events: data.events.map((e) => eventFromJson(e)),
+    };
+  }
+
+  /**
+   * Updates the value of an item's property
+   * @param propertyName The name (key) of the property you want to change
+   * @param propertyValue The new value you want to set the property to
+   * @returns updated item
+   */
+  public async updateProperty(propertyName: string, propertyValue: string): Promise<{ item: IAlturaItem }> {
+    const json = await this.apiCall.post<{ item: object }>(
+      'item/update_property',
+      { apiKey: this.apiCall.apiKey },
+      {
+        address: this._creatorAddress,
+        tokenId: this._tokenId,
+        propertyName,
+        propertyValue,
+      },
+    );
+    return {
+      item: itemFromJson(json.item),
     };
   }
 
   /**
    *
-   * @param propertyName
-   * @param propertyValue
+   * @param imageIndex The index of the image you wish to change to (index starts at 0)
    * @returns
    */
-  public async updateProperty(
-    propertyName: string,
-    propertyValue: string,
-  ): Promise<{
-    // return type
-  }> {
-    // Implement code here
-    return {};
-  }
+  public async updatePrimaryImage(imageIndex: number): Promise<{ item: IAlturaItem }> {
+    const json = await this.apiCall.post<{ item: object }>('item/update_primary_image', {
+      address: this._collectionAddress,
+      tokenid: this._tokenId,
+      imageIndex,
+    });
 
-  /**
-   *
-   * @param imageIndex
-   * @returns
-   */
-  public async updatePrimaryImage(imageIndex: number): Promise<{
-    // return type
-  }> {
-    // Implement code here
-    return {};
+    return {
+      item: itemFromJson(json.item),
+    };
   }
 }

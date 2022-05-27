@@ -9,20 +9,21 @@ const address = '0x0000000000000000000000000000000000000000';
 // Test altura.getUser()
 test('Altura User', async () => {
   const alturaUser = await altura.getUser(address);
-  expect(typeof alturaUser._address).toBe('string');
-  expect(typeof alturaUser._name).toBe('string');
+  expect(alturaUser._address).toBe('0x0000000000000000000000000000000000000000');
 });
 
 // Test alturaUser.getItems()
-// test('Altura user items', async () => {
-//   const alturaUser = await altura.getUser(address);
-//   const data = await alturaUser.getItems();
+test('Altura user items', async () => {
+  const alturaUser = await altura.getUser(address);
+  const data = await alturaUser.getItems();
 
-//   expect(data.items).toEqual(expect.any(Array));
-//   expect(data.count).toEqual(expect.any(Number));
+  expect(data.items).toEqual(expect.any(Array));
+  expect(data.items.length).toBeGreaterThanOrEqual(0);
+  expect(data.count).toBeGreaterThanOrEqual(0);
 
-//   const item = data.items[0];
-//   expect(item.collectionAddress).toEqual(expect.any(String));
-//   expect(item.tokenId).toEqual(expect.any(Number));
-//   expect(item.name).toEqual(expect.any(String));
-// });
+  if (data.items.length > 0) {
+    const item = data.items[0];
+    expect(item).toHaveProperty('collectionAddress');
+    expect(item).toHaveProperty('tokenId');
+  }
+});

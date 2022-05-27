@@ -1,4 +1,4 @@
-import { IAlturaCollection, IAlturaItem, IAlturaUser } from '../types';
+import { IAlturaCollection, IAlturaEvevnt, IAlturaItem, IAlturaUser } from '../types';
 
 export const userFromJson = (user: any): IAlturaUser => {
   const fromJson: IAlturaUser = {
@@ -68,6 +68,25 @@ export const collectionFromJson = (collection: any): IAlturaCollection => {
     volume_1w: collection.volume_1w,
     volume_30d: collection.volume_30d,
     volume_all: collection.volume_all,
+  };
+
+  return fromJson;
+};
+
+export const eventFromJson = (event: any): IAlturaEvevnt => {
+  const fromJson = {
+    id: event.id,
+    amount: event.amount,
+    blockNumber: event.blockNumber,
+    chainId: event.chainId,
+    event: event.event,
+    from: event.from,
+    itemCollection: event.itemCollection,
+    itemRef: event.itemRef,
+    timestamp: event.timestamp,
+    to: event.to,
+    tokenId: event.tokenId,
+    transactionHash: event.transactionHash,
   };
 
   return fromJson;

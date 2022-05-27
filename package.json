@@ -14,7 +14,7 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --coverage --config jestconfig.json",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",

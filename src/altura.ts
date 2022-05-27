@@ -116,24 +116,26 @@ export class Altura {
    * @param page The offset for returned users. Calculated as (page - 1) * perpage (default: 1)
    * @param sortBy The field to sort the users by (any field in the user schema may be used) (default: "name")
    * @param sortDir Choose to sort in ascending(asc) or descending(desc) order (default: 'desc')
+   * @param searchQuery Object of search fields and values to get filterd users array
    * @returns An array of users
    */
-  public async getUsers(params?: {
-    perPage?: number;
-    page?: number;
-    sortBy?: string;
-    sortDir?: 'desc' | 'asc';
-  }): Promise<{ users: IAlturaUser[]; count: number }> {
-    const _perPage = params && params.perPage ? params.perPage : 24;
-    const _page = params && params.page ? params.page : 1;
-    const _sortBy = params && params.sortBy ? params.sortBy : 'name';
-    const _sortDir = params && params.sortDir ? params.sortDir : 'desc';
-    const json = await this.apiCall.get<{ users: Object[]; count: number }>('user', {
-      perPage: _perPage,
-      page: _page,
-      sortBy: _sortBy,
-      sortDir: _sortDir,
-    });
+  public async getUsers(
+    params?: {
+      perPage?: number;
+      page?: number;
+      sortBy?: string;
+      sortDir?: 'desc' | 'asc';
+    },
+    searchQuery?: object,
+  ): Promise<{ users: IAlturaUser[]; count: number }> {
+    let query = {
+      perPage: params && params.perPage ? params.perPage : 24,
+      page: params && params.page ? params.page : 1,
+      sortBy: params && params.sortBy ? params.sortBy : 'name',
+      sortDir: params && params.sortDir ? params.sortDir : 'desc',
+    };
+    if (searchQuery) query = { ...query, ...searchQuery };
+    const json = await this.apiCall.get<{ users: object[]; count: number }>('user', query);
 
     return {
       users: json.users.map((j) => userFromJson(j)),
@@ -149,30 +151,30 @@ export class Altura {
    * @param sortDir Choose to sort in ascending(asc) or descending(desc) order (default: 'desc')
    * @param slim Returns a more condensed version of the items. Limits the item schema to: collectionAddress, tokenId, name, description, imageUrl and properties (default: false)
    * @param stateOnly Returns only the information required to identify a known item's state: properties, and imageIndex (default: false)
+   * @param searchQuery Object of search fields and values to get filterd items array
    */
-  public async getItems(params?: {
-    perPage?: number;
-    page?: number;
-    sortBy?: string;
-    sortDir?: 'desc' | 'asc';
-    slim?: boolean;
-    stateOnly?: boolean;
-  }): Promise<{ items: object[]; count: number }> {
-    const _perPage = params && params.perPage ? params.perPage : 24;
-    const _page = params && params.page ? params.page : 1;
-    const _sortBy = params && params.sortBy ? params.sortBy : 'mintDate';
-    const _sortDir = params && params.sortDir ? params.sortDir : 'desc';
-    const _slim = params && params.slim ? params.slim : false;
-    const _stateOnly = params && params.stateOnly ? params.stateOnly : false;
+  public async getItems(
+    params?: {
+      perPage?: number;
+      page?: number;
+      sortBy?: string;
+      sortDir?: 'desc' | 'asc';
+      slim?: boolean;
+      stateOnly?: boolean;
+    },
+    searchQuery?: object,
+  ): Promise<{ items: object[]; count: number }> {
+    let query = {
+      perPage: params && params.perPage ? params.perPage : 24,
+      page: params && params.page ? params.page : 1,
+      sortBy: params && params.sortBy ? params.sortBy : 'mintDate',
+      sortDir: params && params.sortDir ? params.sortDir : 'desc',
+      slim: params && params.slim ? params.slim : false,
+      stateOnly: params && params.stateOnly ? params.stateOnly : false,
+    };
+    if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ items: IAlturaItem[]; count: number }>('item', {
-      perPage: _perPage,
-      page: _page,
-      sortBy: _sortBy,
-      sortDir: _sortDir,
-      slim: _slim,
-      stateOnly: _stateOnly,
-    });
+    const json = await this.apiCall.get<{ items: IAlturaItem[]; count: number }>('item', query);
 
     return {
       items: json.items.map((item) => itemFromJson(item)),
@@ -186,24 +188,26 @@ export class Altura {
    * @param page The offset for returned collections. Calculated as (page - 1) * perpage (default: 1)
    * @param sortBy The field to sort the collections by (any field in the collection schema may be used) (default: "name")
    * @param sortDir Choose to sort in ascending(asc) or descending(desc) order (default: 'desc')
+   * @param searchQuery Object of search fields and values to get filterd collections array
    */
-  public async getCollections(params?: {
-    perPage?: number;
-    page?: number;
-    sortBy?: string;
-    sortDir?: 'desc' | 'asc';
-  }): Promise<{ collections: IAlturaCollection[]; count: number }> {
-    const _perPage = params && params.perPage ? params.perPage : 24;
-    const _page = params && params.page ? params.page : 1;
-    const _sortBy = params && params.sortBy ? params.sortBy : 'mintDate';
-    const _sortDir = params && params.sortDir ? params.sortDir : 'desc';
+  public async getCollections(
+    params?: {
+      perPage?: number;
+      page?: number;
+      sortBy?: string;
+      sortDir?: 'desc' | 'asc';
+    },
+    searchQuery?: object,
+  ): Promise<{ collections: IAlturaCollection[]; count: number }> {
+    let query = {
+      perPage: params && params.perPage ? params.perPage : 24,
+      page: params && params.page ? params.page : 1,
+      sortBy: params && params.sortBy ? params.sortBy : 'mintDate',
+      sortDir: params && params.sortDir ? params.sortDir : 'desc',
+    };
+    if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ collections: IAlturaCollection[]; count: number }>('collection', {
-      perPage: _perPage,
-      page: _page,
-      sortBy: _sortBy,
-      sortDir: _sortDir,
-    });
+    const json = await this.apiCall.get<{ collections: IAlturaCollection[]; count: number }>('collection', query);
 
     return {
       collections: json.collections.map((c) => collectionFromJson(c)),
@@ -212,12 +216,12 @@ export class Altura {
   }
 
   /**
-   *
-   * @param collectionAddress
-   * @param tokenId
-   * @param amount
-   * @param to
-   * @returns
+   * Transfers a single NFT from your developer wallet to another user
+   * @param collectionAddress The item's collection address
+   * @param tokenId The item's tokenId
+   * @param amount The quantity of this particular item you wish to transfer.
+   * This operation will fail if you try to transfer more than your balance.
+   * @param to The recipient's EVM-compatible address (0x...)
    */
   public async transferItem(
     collectionAddress: string,
@@ -233,6 +237,14 @@ export class Altura {
     return { txHash: data.txHash };
   }
 
+  /**
+   * Transfers several items of a particular collection from your developer wallet to another user
+   * @param collectionAddress The item's collection address
+   * @param tokenIds An array of the token Ids you wish to transfer from the specified collection
+   * @param amounts An array of the amount of each tokenId you wish to transfer
+   * This array must be the same length as the tokenIds array
+   * @param to The recipient's EVM-compatible address (0x...)
+   */
   public async transferItems(
     collectionAddress: string,
     tokenIds: number[],
@@ -248,12 +260,15 @@ export class Altura {
   }
 
   /**
+   * Mints additional supply of an existent NFT
    *
-   * @param addresss
-   * @param tokenId
-   * @param amount
-   * @param to
-   * @returns
+   * Takes an item's collection address, tokenId, amount to mint, address to mint to (to) and your API key and mints additional supply of the specified NFT to the specified address.
+   * Only works if the circulating supply is less than the maximum supply
+   * @param addresss The item's collection address
+   * @param tokenId The item's tokenId
+   * @param amount The amount of additional supply you want to mint
+   * @param to The address you want to mint the additional supply to.
+   * You do not need to mint the additional supply to your own wallet, instead, you can mint them to someone else's wallt right away
    */
   public async mintAdditionalSupply(
     address: string,

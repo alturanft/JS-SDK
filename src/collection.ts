@@ -1,4 +1,6 @@
 import { ApiCall } from './apiCall';
+import { IAlturaCollection } from './types';
+import { collectionFromJson } from './utils';
 
 export class AlturaCollection {
   _address: string;
@@ -61,20 +63,25 @@ export class AlturaCollection {
   }
 
   /**
-   *
-   * @param name
-   * @param description
-   * @param website
-   * @returns
+   * Takes properties to update and returns updated collection
+   * @param params Object with field name and value you wish to update
    */
-  public async update(
-    name?: string,
-    description?: string,
-    website?: string,
-  ): Promise<{
-    // return type
+  public async update(params?: {
+    image?: string;
+    imageUrl?: string;
+    description?: string;
+    website?: string;
+    genre?: string;
+  }): Promise<{
+    collection: IAlturaCollection;
   }> {
-    // Implement code here
-    return {};
+    const json = await this.apiCall.post<{ collection: object }>(
+      `collection/${this._address}/update`,
+      { apiKey: this.apiCall.apiKey },
+      params,
+    );
+    return {
+      collection: collectionFromJson(json.collection),
+    };
   }
 }

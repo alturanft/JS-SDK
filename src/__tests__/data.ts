@@ -46,6 +46,8 @@ export const test_collections = [
     name: 'FARMZ',
     ownerAddress: '0x0000000000000000000000000000000000000000',
     image: '',
+    imageUrl:
+      'https://altura-marketplace-1.s3.us-east-2.amazonaws.com/56-0x067f95c8e2be7b590e3614b08d51355b85b8bd0e_6853f225-a1b9-415c-b0e8-c3b240e04539.png',
     imageHash: '',
     description: '',
     uri: 'https://api.alturanft.com/meta/farmz/',
