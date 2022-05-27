@@ -2,13 +2,11 @@ export const test_apiUsers = [
   {
     key: '0000000-0000000-0000000-0000000',
     address: '0x0000000000000000000000000000000000000000',
-    wallet_address: '0x1111111111111111111111111111111111111000',
     auth_code: '000000',
   },
   {
     key: '1111111-1111111-1111111-1111111',
     address: '0x1111111111111111111111111111111111111111',
-    wallet_address: '0x11111111111111111111111111111111111111001',
     auth_code: '111111',
   },
 ];
@@ -21,6 +19,8 @@ export const test_items = [
     name: 'Sasuke',
     description: '',
     owner: '0x1111111111111111111111111111111111111111',
+    supply: 9,
+    maxSupply: 10,
   },
   {
     collectionAddress: '0xe7f8ccdae7f8ccdae7f8ccdae7f8ccdae7f8ccda',
@@ -29,6 +29,8 @@ export const test_items = [
     name: 'YO-YO #13',
     description: 'Simple harmonic motions, for a simple life.',
     owner: '0x0000000000000000000000000000000000000000',
+    supply: 99,
+    maxSupply: 100,
   },
 ];
 

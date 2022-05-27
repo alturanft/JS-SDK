@@ -256,14 +256,19 @@ export class Altura {
    * @returns
    */
   public async mintAdditionalSupply(
-    addresss: string,
+    address: string,
     tokenId: number,
     amount: number,
     to: string,
   ): Promise<{ txHash: string }> {
-    // Implement code here
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/mint',
+      { apiKey: this.apiCall.apiKey },
+      { address, tokenId, amount, to },
+    );
+
     return {
-      txHash: '',
+      txHash: data.txHash,
     };
   }
 }
