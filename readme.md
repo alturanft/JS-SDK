@@ -201,7 +201,7 @@ const response = { users: IAlturaUser[], count: number } = await altura.getUsers
 const users = response.users;
 const userCount = response.count;
 ```
- # | Parameter | Datatype | Default
+ No | Parameter | Datatype | Default
  --- | --- | --- | ---
  1 | perPage | number | 24
  2 | page | number | 1
@@ -227,7 +227,7 @@ const response = { items: IAlturaItem[], count: number } = await altura.getItems
 const items = response.items;
 const itemCount = response.count;
 ```
- # | Parameter | Datatype | Default
+ No | Parameter | Datatype | Default
  --- | --- | --- | ---
  1 | perPage | number | 24
  2 | page | number | 1
@@ -251,7 +251,7 @@ const response = { collections: IAlturaCollection[], count: number } = await alt
 const collections = response.collections;
 const collectionCount = response.count;
 ```
- # | Parameter | Datatype | Default
+ No | Parameter | Datatype | Default
  --- | --- | --- | ---
  1 | perPage | number | 24
  2 | page | number | 1
