@@ -50,6 +50,9 @@
           <ul><li><a href="#get-all-users">getUsers()</a</li></ul>
           <ul><li><a href="#get-all-items">getItems()</a</li></ul>
           <ul><li><a href="#get-all-collections">getCollections()</a</li></ul>
+          <ul><li><a href="#get-user-by-wallet-address">getUser()</a</li></ul>
+          <ul><li><a href="#get-item-by-collection-address-and-token-id">getItem()</a</li></ul>
+          <ul><li><a href="#get-collection-by-address">getCollection()</a</li></ul>
         </li>
         <li><a href="#altura-user">Altura User</li>
         <li><a href="#altura-item">Altura Item</li>
@@ -234,6 +237,8 @@ const itemCount = response.count;
  3 | sortBy | string | 'mintDate'
  4 | sortDir | 'asc' &#124; 'desc' | 'desc'
 
+<p align="right"><a href="#top">back to top</a></p>
+
 - #### Get all collections
 You can fetch all collections using `getCollections` method of `Altura`, which will return an array of collections with pagination and sort and count of collections.
 
@@ -260,6 +265,36 @@ const collectionCount = response.count;
 
 <p align="right"><a href="#top">back to top</a></p>
 
+- #### Get user by wallet address
+
+You can get user with specific wallet address using `getUser` of `Altura`, which will return instance of `AlturaUser`.
+
+```Typescript
+const alturaUser = altura.getUser(WALLET_ADDRESS);
+```
+
+<p align="right"><a href="#top">back to top</a></p>
+
+- #### Get item by collection address and token ID
+
+You can get item with specific collection address and token ID using `getItem` of `Altura`, which will return instance of `AlturaItem`.
+
+```Typescript
+const alturaItem = altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
+```
+
+<p align="right"><a href="#top">back to top</a></p>
+
+- #### Get collection by address
+
+You can get collection with specific address using `getCollection` of `Altura`, which will return instance of `AlturaCollection`.
+
+```Typescript
+const alturaCollection = altura.getCollection(WALLET_ADDRESS);
+```
+
+<p align="right"><a href="#top">back to top</a></p>
+
 ### _Altura User_
 
 Users are represented by the `IAlturaUser` interface
@@ -277,16 +312,6 @@ export interface IAlturaUser {
   // Url of the user's profile image
   profilePicUrl: string;
 }
-```
-
-
-
-- #### Get user by wallet address
-
-You can get user with specific wallet address using `getUser` in `Altura`, which will return instance of `AlturaUser`.
-
-```Typescript
-const alturaUser = altura.getUser(WALLET_ADDRESS);
 ```
 
 <!-- ROADMAP -->
