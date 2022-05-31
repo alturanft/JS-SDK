@@ -162,8 +162,9 @@ export class AlturaItem {
       'item/update_property',
       { apiKey: this.apiCall.apiKey },
       {
-        address: this._creatorAddress,
+        address: this._collectionAddress,
         tokenId: this._tokenId,
+        chainId: this._chainId,
         propertyName,
         propertyValue,
       },
@@ -179,11 +180,16 @@ export class AlturaItem {
    * @returns
    */
   public async updatePrimaryImage(imageIndex: number): Promise<{ item: IAlturaItem }> {
-    const json = await this.apiCall.post<{ item: object }>('item/update_primary_image', {
-      address: this._collectionAddress,
-      tokenid: this._tokenId,
-      imageIndex,
-    });
+    const json = await this.apiCall.post<{ item: object }>(
+      'item/update_primary_image',
+      { apiKey: this.apiCall.apiKey },
+      {
+        address: this._collectionAddress,
+        tokenId: this._tokenId,
+        chainId: this._chainId,
+        imageIndex,
+      },
+    );
 
     return {
       item: itemFromJson(json.item),

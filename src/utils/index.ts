@@ -44,6 +44,7 @@ export const itemFromJson = (item: any): IAlturaItem => {
     primaryImageIndex: item.primaryImageIndex,
     like: item.like,
     mintDate: item.mintdate,
+    otherImages: item.otherImages,
   };
 
   return fromJson;

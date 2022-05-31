@@ -21,6 +21,25 @@ export const test_items = [
     owner: '0x1111111111111111111111111111111111111111',
     supply: 9,
     maxSupply: 10,
+    properties: [
+      {
+        name: 'attack',
+        value: 5,
+        static: false,
+      },
+    ],
+    imageHash: 'QmUSRR91MM8R5tf12DH2dvMRpxBFpJRPYTvk36sSs6mDwk',
+    image: 'https://ipfs.io/ipfs/QmTKbzauwfm2co174Ew7xr3SwnEH7ghf3j7h3MrUmfvTFm',
+    fileType: 'image/jpeg',
+    isVideo: false,
+    otherImages: [
+      {
+        imageHash: 'QmUSRR91MM8R5tf12DH2dvMRpxBFpJRPYTvk36sSs6mDwk',
+        image: 'https://ipfs.io/ipfs/QmTKbzauwfm2co174Ew7xr3SwnEH7ghf3j7h3MrUmfvTFm',
+        fileType: 'image/jpeg',
+        isVideo: false,
+      },
+    ],
   },
   {
     collectionAddress: '0xe7f8ccdae7f8ccdae7f8ccdae7f8ccdae7f8ccda',
@@ -31,6 +50,36 @@ export const test_items = [
     owner: '0x0000000000000000000000000000000000000000',
     supply: 99,
     maxSupply: 100,
+    properties: [
+      {
+        name: 'attack',
+        value: 5,
+        static: false,
+      },
+      {
+        name: 'defence',
+        value: 12,
+        static: true,
+      },
+    ],
+    imageHash: 'QmUSRR91MM8R5tf12DH2dvMRpxBFpJRPYTvk36sSs6mDwk',
+    image: 'https://ipfs.io/ipfs/QmTKbzauwfm2co174Ew7xr3SwnEH7ghf3j7h3MrUmfvTFm',
+    fileType: 'image/jpeg',
+    isVideo: false,
+    otherImages: [
+      {
+        imageHash: 'QmUSRR91MM8R5tf12DH2dvMRpxBFpJRPYTvk36sSs6mDwk',
+        image: 'https://ipfs.io/ipfs/QmTKbzauwfm2co174Ew7xr3SwnEH7ghf3j7h3MrUmfvTFm',
+        fileType: 'image/jpeg',
+        isVideo: false,
+      },
+      {
+        imageHash: 'QmUSRR91MM8R5tf12DH2dvMRpxBFpJRPYTvk36sSs6mDwk1',
+        image: 'https://ipfs.io/ipfs/QmTKbzauwfm2co174Ew7xr3SwnEH7ghf3j7h3MrUmfvTFm1',
+        fileType: 'image/jpeg',
+        isVideo: false,
+      },
+    ],
   },
 ];
 

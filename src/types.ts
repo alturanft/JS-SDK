@@ -43,6 +43,7 @@ export interface IAlturaItem {
   isVerified: boolean;
   website: string;
   slug: string;
+  otherImages: { imageHash: string; image: string; fileType: string; isVideo: boolean }[];
 }
 
 export interface IAlturaCollection {
