@@ -502,6 +502,12 @@ export interface IAlturaItem {
   image: string;
   imageUrl: string;
   primaryImageIndex?: number;
+  otherImages: {
+    imageHash: string;
+    image: string;
+    fileType: string;
+    isVideo: boolean
+  }[];
   fileType: string;
   isVideo: boolean;
   creatorAddress: string;
@@ -527,7 +533,7 @@ export interface IAlturaItem {
   uri: string;
   isVerified: boolean;
   website: string;
-  slug: string;
+  slug: string;\
 }
 ```
 

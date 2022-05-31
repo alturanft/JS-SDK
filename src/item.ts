@@ -33,6 +33,13 @@ export class AlturaItem {
   _isVerified: boolean;
   _website: string;
   _slug: string;
+  _otherImages: {
+    imageHash: string;
+    image: string;
+    fileType: string;
+    isVideo: boolean;
+  }[];
+
   private apiCall: ApiCall;
 
   constructor(
@@ -66,6 +73,13 @@ export class AlturaItem {
     isVerified: boolean,
     website: string,
     slug: string,
+    otherImages: {
+      imageHash: string;
+      image: string;
+      fileType: string;
+      isVideo: boolean;
+    }[],
+
     apiCall: ApiCall,
   ) {
     this._collectionAddress = collectionAddress;
@@ -98,6 +112,7 @@ export class AlturaItem {
     this._isVerified = isVerified;
     this._website = website;
     this._slug = slug;
+    this._otherImages = otherImages;
     this.apiCall = apiCall;
   }
 
