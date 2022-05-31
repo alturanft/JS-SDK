@@ -45,18 +45,30 @@
       <a href="#usage">Usage</a>
       <ul>
         <li>
-          <a href="#altura">Altura
-          <ul><li><a href="#authenticate-user">authenticateUser()</a</li></ul>
-          <ul><li><a href="#get-all-users">getUsers()</a</li></ul>
-          <ul><li><a href="#get-all-items">getItems()</a</li></ul>
-          <ul><li><a href="#get-all-collections">getCollections()</a</li></ul>
-          <ul><li><a href="#get-user-by-wallet-address">getUser()</a</li></ul>
-          <ul><li><a href="#get-item-by-collection-address-and-token-id">getItem()</a</li></ul>
-          <ul><li><a href="#get-collection-by-address">getCollection()</a</li></ul>
+          <a href="#altura">Altura</a>
+          <ul><li><a href="#authenticate-user">authenticateUser()</a></li></ul>
+          <ul><li><a href="#get-all-users">getUsers()</a></li></ul>
+          <ul><li><a href="#get-all-items">getItems()</a></li></ul>
+          <ul><li><a href="#get-all-collections">getCollections()</a></li></ul>
+          <ul><li><a href="#get-user-by-wallet-address">getUser()</a></li></ul>
+          <ul><li><a href="#get-item-by-collection-address-and-token-id">getItem()</a></li></ul>
+          <ul><li><a href="#get-collection-by-address">getCollection()</a></li></ul>
         </li>
-        <li><a href="#altura-user">Altura User</li>
-        <li><a href="#altura-item">Altura Item</li>
-        <li><a href="#altura-collection">Altura Collection</li>
+        <li>
+          <a href="#altura-user">Altura User</a>
+          <ul><li><a href="#get-user-items">getItems()</a></li></ul>
+        </li>
+        <li>
+          <a href="#altura-item">Altura Item</a>
+          <ul><li><a href="#get-item-holders">getHolders()</a></li></ul>
+          <ul><li><a href="#get-item-history">getHistory()</a></li></ul>
+          <ul><li><a href="#update-item-property">updateProperty()</a></li></ul>
+          <ul><li><a href="#update-primary-image">updatePrimaryImage()</a></li></ul>
+        </li>
+        <li>
+          <a href="#altura-collection">Altura Collection</a>
+          <ul><li><a href="#update-item-property">update()</a></li></ul>
+        </li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -151,7 +163,7 @@ To fund your developer account, log into the Developer Portal and click on depos
 
 ### _Altura_
 
-You can get instance of `Altura` using your API key.
+You can get instance of `Altura` with your API key.
 ```Typescript
 import {Altura} from "altura-js";
 
@@ -191,25 +203,33 @@ const {authenticated} = response;
 You can fetch all users using `getUsers` method of `Altura`, which will return an array of users with pagination and sort and count of users.
 
 ```Typescript
-const response = { users: IAlturaUser[], count: number } = await altura.getUsers();
+const response: { users: IAlturaUser[], count: number } = await altura.getUsers();
 
 // Customize pagination and sort
-const response = { users: IAlturaUser[], count: number } = await altura.getUsers({
+const response: { users: IAlturaUser[], count: number } = await altura.getUsers({
   perPage: 20,
   page: 1,
   sortBy: 'name',
   sortDir: 'asc'
 });
 
+// Get filtered result
+const resonse: {users: IAlturaUser[], count: number} = await altura.getUsers(
+  {}, // Default pagination
+  {
+    name: 'AlturaNFT'
+  } // Search query here
+)
+
 const users = response.users;
 const userCount = response.count;
 ```
- No | Parameter | Datatype | Default
- --- | --- | --- | ---
- 1 | perPage | number | 24
- 2 | page | number | 1
- 3 | sortBy | string | 'name'
- 4 | sortDir | 'asc' &#124; 'desc' | 'desc'
+ No | Parameter | Datatype | Description | Default
+ --- | --- | --- | --- | ---
+ 1 | perPage | number | The number of users to return | 24
+ 2 | page | number| The offset for returned users.Calculated as (page - 1) * perPage | 1 
+ 3 | sortBy | string | The field to sort the users by (any field in the user schema may be used) | 'name'
+ 4 | sortDir | 'asc' &#124; 'desc' | Choose to sort in ascending (asc) or descending (desc) order | 'desc'
 
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -217,25 +237,37 @@ const userCount = response.count;
 You can fetch all items using `getItems` method of `Altura`, which will return an array of items with pagination and sort and count of items.
 
 ```Typescript
-const response = { items: IAlturaItem[], count: number } = await altura.getItems();
+const response: { items: IAlturaItem[], count: number } = await altura.getItems();
 
-// Customize pagination and sort
-const response = { items: IAlturaItem[], count: number } = await altura.getItems({
+// Customize pagination, sort and return result
+const response: { items: IAlturaItem[], count: number } = await altura.getItems({
   perPage: 20,
   page: 1,
   sortBy: 'name',
-  sortDir: 'asc'
+  sortDir: 'asc',
+  slim: true,
+  stateOnly: true
 });
+
+// Get filtered result
+const response: { items: IAlturaItem[], count: number } = await altura.getItems(
+  {}, // Default pagination
+  {
+    collectionAddress: COLLECTION_ADDRESS
+  } // Search query here
+)
 
 const items = response.items;
 const itemCount = response.count;
 ```
- No | Parameter | Datatype | Default
- --- | --- | --- | ---
- 1 | perPage | number | 24
- 2 | page | number | 1
- 3 | sortBy | string | 'mintDate'
- 4 | sortDir | 'asc' &#124; 'desc' | 'desc'
+ No | Parameter | Datatype | Description | Default
+ --- | --- | --- | --- | ---
+ 1 | perPage | number | The number of items to return | 24
+ 2 | page | number | The offset for returned items. Calculated as (page - 1) * perPage | 1
+ 3 | sortBy | string | The field to sort the items by (any field in the item schema may be used) | 'mintDate'
+ 4 | sortDir | 'asc' &#124; 'desc' | Choose to sort in ascending (asc) or descending (desc) order | 'desc'
+ 5 | slim | boolean | Returns a more condensed version of the items. Limits the item schema to : collectionAddress, tokenId, name, description, imageUrl and properties | false
+ 6 | stateOnly | Boolean | Returns only the information required to identity a known item's state: properties and imageIndex | false
 
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -243,35 +275,36 @@ const itemCount = response.count;
 You can fetch all collections using `getCollections` method of `Altura`, which will return an array of collections with pagination and sort and count of collections.
 
 ```Typescript
-const response = { collections: IAlturaCollection[], count: number } = await altura.getCollections();
+const response: { collections: IAlturaCollection[], count: number } = await altura.getCollections();
 
 // Customize pagination and sort
-const response = { collections: IAlturaCollection[], count: number } = await altura.getCollections({
+const response: { collections: IAlturaCollection[], count: number } = await altura.getCollections({
   perPage: 20,
   page: 1,
   sortBy: 'name',
   sortDir: 'asc'
 });
 
+// Get filtered result
+const response: { collections: IAlturaCollection[], count: number } = await altura.getCollections(
+  {}, // Default pagination
+  {
+    isVerified: true
+  }
+);
+
 const collections = response.collections;
 const collectionCount = response.count;
 ```
- No | Parameter | Datatype | Default
- --- | --- | --- | ---
- 1 | perPage | number | 24
- 2 | page | number | 1
- 3 | sortBy | string | 'mintDate'
- 4 | sortDir | 'asc' &#124; 'desc' | 'desc'
+ No | Parameter | Datatype | Description | Default
+ --- | --- | --- | --- | ---
+ 1 | perPage | number | The number of collections to return | 24
+ 2 | page | number | the offset for returned collections | 1
+ 3 | sortBy | string | The field to sort the collections by (any field in the collection schema may be used) | 'mintDate'
+ 4 | sortDir | 'asc' &#124; 'desc' | Choose to sort in ascending (asc) or descending (desc) order | 'desc'
 
 <p align="right"><a href="#top">back to top</a></p>
 
-- #### Get user by wallet address
-
-You can get user with specific wallet address using `getUser` of `Altura`, which will return instance of `AlturaUser`.
-
-```Typescript
-const alturaUser = altura.getUser(WALLET_ADDRESS);
-```
 
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -280,7 +313,7 @@ const alturaUser = altura.getUser(WALLET_ADDRESS);
 You can get item with specific collection address and token ID using `getItem` of `Altura`, which will return instance of `AlturaItem`.
 
 ```Typescript
-const alturaItem = altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
+const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
 ```
 
 <p align="right"><a href="#top">back to top</a></p>
@@ -290,12 +323,58 @@ const alturaItem = altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
 You can get collection with specific address using `getCollection` of `Altura`, which will return instance of `AlturaCollection`.
 
 ```Typescript
-const alturaCollection = altura.getCollection(WALLET_ADDRESS);
+const alturaCollection = await altura.getCollection(WALLET_ADDRESS);
 ```
 
 <p align="right"><a href="#top">back to top</a></p>
 
 ### _Altura User_
+
+You can get instance of `AlturaUser` using `getUser` method of `Alture` with the user's wallet address.
+
+```Typescript
+const alturaUser = await altura.getUser(WALLET_ADDRESS);
+```
+
+- Get user's items(#get-user-items)  
+You can get items belongs to current user using `getItems` method of `AlturaUser`, which returns an array of items with pagination and sort, and count of items.
+
+```Typescript
+const response: { items: IAlturaItem[], count: number } = await alturaUser.getItems();
+
+// Customize pagination, sort and return result
+const response: {items: IAlturaItem[], count: number} = await alturaUser.getItems({
+  perPage: 20,
+  page: 1,
+  sortBy: 'mintDate',
+  sortDir: 'desc',
+  includeListed: false;
+  slim: true;
+  stateOnly: false;
+});
+
+const items = response.items;
+const itemCount = response.count;
+```
+
+ No | Parameter | Datatype | Default
+ --- | --- | --- | ---
+ 1 | perPage | number | 24
+ 2 | page | number | 1
+ 3 | sortBy | string | 'mintDate'
+ 4 | sortDir | 'asc' &#124; 'desc' | 'desc'
+ 5 | includeLIsted | boolean | true
+ 6 | slim 
+
+### _Altura Item_
+
+You can get holders of current item using `getHolders` method of `AlturaUser`, which returns an array of holders.
+```Typescript
+const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
+const response: {holders: IAlturaUser[]} = await alturaItem.getHolders();
+
+const holders = response.holders;
+```
 
 Users are represented by the `IAlturaUser` interface
 
