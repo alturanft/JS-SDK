@@ -50,6 +50,9 @@
           <ul><li><a href="#get-all-users">getUsers()</a></li></ul>
           <ul><li><a href="#get-all-items">getItems()</a></li></ul>
           <ul><li><a href="#get-all-collections">getCollections()</a></li></ul>
+          <ul><li><a href="#transfer-single-item">transferItem()</a></li></ul>
+          <ul><li><a href="#transfer-several-items">transferItems()</a></li></ul>
+          <ul><li><a href="#mint-additional-supply">mintAdditionalSupply()</a></li></ul>
         </li>
         <li>
           <a href="#altura-user">Altura User</a>
@@ -65,6 +68,13 @@
         <li>
           <a href="#altura-collection">Altura Collection</a>
           <ul><li><a href="#update-property">update()</a></li></ul>
+        </li>
+        <li>
+          <a href="#type-definitions">Type Definitions</a>
+          <ul><li><a href="#ialturauser">IAlturaUser</a></li></ul>
+          <ul><li><a href="#ialturaitem">IAlturaItem</a></li></ul>
+          <ul><li><a href="#ialturacollection">IAlturaCollection</a></li></ul>
+          <ul><li><a href="#ialturaevent">IAlturaEvent</a></li></ul>
         </li>
       </ul>
     </li>
@@ -330,6 +340,8 @@ const altura = new Altura(YOUR_API_KEY);
   | 3   | amount             | number   | The quantity of this particular item you wish to transfer. This operation will fail if you try to transfer more than your balance |
   | 4   | to                 | string   | The recipient's EVM-compatible address (0x...)                                                                                    |
 
+  <p align="right"><a href="#top">back to top</a></p>
+
 - #### Transfer Several Items
 
   You can transfer several items of particullar collection address using `transferItems` of `Altura` which return s transaction Hash;
@@ -354,6 +366,8 @@ const altura = new Altura(YOUR_API_KEY);
 
   > The length of TOKEN_IDS must be same with length of AMOUNTS
 
+  <p align="right"><a href="#top">back to top</a></p>
+
 - #### Mint Additional Supply
 
   You can mint additional supply of particullar item using `mintAdditionalSupply` method of `Altura` which will return transaction hash.
@@ -373,6 +387,8 @@ const altura = new Altura(YOUR_API_KEY);
   | 2   | token_id           | number   | The item's tokenId                                                                                                                                                                      |
   | 3   | amount             | number   | The amount of additional supply you want to mint                                                                                                                                        |
   | 4   | to                 | string   | The address you want to mint the additional supply to. You do not need to mint the additional supply to your own wallet, instead, you can mint them to someone else's wallet right away |
+
+  <p align="right"><a href="#top">back to top</a></p>
 
 ### _Altura User_
 
@@ -534,7 +550,9 @@ const updateCollection = response.collection;
 
 ### _Type Definitions_
 
-#### Users are represented by the `IAlturaUser` interface
+#### `IAlturaUser`
+
+Users are represented by the `IAlturaUser` interface
 
 ```Typescript
 export interface IAlturaUser {
@@ -553,7 +571,9 @@ export interface IAlturaUser {
 
 <p align="right"><a href="#top">back to top</a></p>
 
-#### Items are represented by the `IAlturaItem` interface
+#### `IAlturaItem`
+
+Items are represented by the `IAlturaItem` interface
 
 ```Typescript
 export interface IAlturaItem {
@@ -602,7 +622,9 @@ export interface IAlturaItem {
 
 <p align="right"><a href="#top">back to top</a></p>
 
-#### Collections are represented by the `IAlturaCollection` interface
+#### `IAlturaCollection`
+
+Collections are represented by the `IAlturaCollection` interface
 
 ```Typescript
 export interface IAlturaCollection {
@@ -628,7 +650,9 @@ export interface IAlturaCollection {
 
 <p align="right"><a href="#top">back to top</a></p>
 
-#### History events are represented by the `IAlturaEvents` interface {#altura-event-interface)
+#### `IAlturaEvent`
+
+History events are represented by the `IAlturaEvents` interface
 
 ```Typescript
 export interface IAlturaEvevnt {
