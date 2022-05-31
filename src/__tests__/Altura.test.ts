@@ -64,9 +64,6 @@ test('Altura authenticate user', async () => {
   spy.mockRestore();
 });
 
-// Test altura.mintAdditionalSupply()
-test('Altura mint additional supply', async () => {});
-
 // Test altura.transferItem()
 test('Altura transfer item', async () => {
   const altura = new Altura('0000000-0000000-0000000-0000000', (arg: string) => logger.debug(arg));
@@ -124,6 +121,7 @@ test('Altura transfer item', async () => {
   spy.mockRestore();
 });
 
+// Test altura.mintAdditionalSupply()
 test('Altura mint additional supply', async () => {
   const altura = new Altura('0000000-0000000-0000000-0000000', (arg: string) => logger.debug(arg));
   const spy = jest
