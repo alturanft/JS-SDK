@@ -32,7 +32,7 @@ export interface IAlturaItem {
   supply: number;
   maxSupply: number;
   stackable: boolean;
-  properties: IItemProperty[];
+  properties: { name: string; value: string; static: boolean }[];
   isListed: boolean;
   holders: number;
   hasUnlockableContent: boolean;

@@ -50,24 +50,21 @@
           <ul><li><a href="#get-all-users">getUsers()</a></li></ul>
           <ul><li><a href="#get-all-items">getItems()</a></li></ul>
           <ul><li><a href="#get-all-collections">getCollections()</a></li></ul>
-          <ul><li><a href="#get-user-by-wallet-address">getUser()</a></li></ul>
-          <ul><li><a href="#get-item-by-collection-address-and-token-id">getItem()</a></li></ul>
-          <ul><li><a href="#get-collection-by-address">getCollection()</a></li></ul>
         </li>
         <li>
           <a href="#altura-user">Altura User</a>
-          <ul><li><a href="#get-user-items">getItems()</a></li></ul>
+          <ul><li><a href="#get-users-items">getItems()</a></li></ul>
         </li>
         <li>
           <a href="#altura-item">Altura Item</a>
-          <ul><li><a href="#get-item-holders">getHolders()</a></li></ul>
-          <ul><li><a href="#get-item-history">getHistory()</a></li></ul>
-          <ul><li><a href="#update-item-property">updateProperty()</a></li></ul>
-          <ul><li><a href="#update-primary-image">updatePrimaryImage()</a></li></ul>
+          <ul><li><a href="#get-items-holders">getHolders()</a></li></ul>
+          <ul><li><a href="#get-items-history">getHistory()</a></li></ul>
+          <ul><li><a href="#update-items-property">updateProperty()</a></li></ul>
+          <ul><li><a href="#update-items-primary-image">updatePrimaryImage()</a></li></ul>
         </li>
         <li>
           <a href="#altura-collection">Altura Collection</a>
-          <ul><li><a href="#update-item-property">update()</a></li></ul>
+          <ul><li><a href="#update-property">update()</a></li></ul>
         </li>
       </ul>
     </li>
@@ -322,7 +319,8 @@ You can get instance of `AlturaUser` using `getUser` method of `Alture` with the
 const alturaUser = await altura.getUser(WALLET_ADDRESS);
 ```
 
-- Get user's items  
+- #### Get user's items
+
   You can get items belongs to current user using `getItems` method of `AlturaUser`, which returns an array of items with pagination and sort, and count of items.
 
   ```Typescript
@@ -361,6 +359,8 @@ const alturaUser = await altura.getUser(WALLET_ADDRESS);
   | 6   | slim          | boolean             | Returns a more condensed version of the items. Limits the item fields to: collectionAddress, tokenId, name, description, imageUrl and properties                | false      |
   | 7   | stateOnly     | boolean             | Returns only the information required to identify a known item's state: properties, and imageIndex                                                              | false      |
 
+<p align="right"><a href="#top">back to top</a></p>
+
 ### _Altura Item_
 
 You can get item with specific collection address and token ID using `getItem` of `Altura`, which will return instance of `AlturaItem`.
@@ -369,7 +369,8 @@ You can get item with specific collection address and token ID using `getItem` o
 const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
 ```
 
-- Get item's holders  
+- #### Get item's holders
+
   You can get holders of current item using `getHolders` method of `AlturaUser`, which returns an array of holders.
 
   ```Typescript
@@ -391,7 +392,10 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   | 2   | page          | number   | The offset for returned items. Calculated as (page - 1) \* perPage                                                                                                         | 1       |
   | 3   | includeListed | boolean  | If user's who have their item listed should be included (listed NFTs are still owned by the user, however on the blockchain they are held by a marketplace smart contract) | true    |
 
-- Get item's history  
+  <p align="right"><a href="#top">back to top</a></p>
+
+- #### Get item's history
+
   You can get history of current item using `getHistory` method of `AlturaItem` which return an array of events.
 
   ```Typescript
@@ -411,7 +415,10 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   | 1   | perPage   | number   | The number of events to return                                     | 24      |
   | 2   | page      | number   | The offset for returned items. Calculated as (page - 1) \* perPage | 1       |
 
-- Update item's property  
+  <p align="right"><a href="#top">back to top</a></p>
+
+- #### Update item's property
+
   You can update property of current item using `updateProperty` method of `AlturaItem` which will return the updated item.
 
   ```Typescript
@@ -420,8 +427,11 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   const updatedItem = response.item;
   ```
 
-- Update item's primary image  
-   Every item has an `imageIndex` property which represents the index of the selected image amongst all the provided images.
+  <p align="right"><a href="#top">back to top</a></p>
+
+- #### Update item's primary image
+
+  Every item has an `imageIndex` property which represents the index of the selected image amongst all the provided images.
   You can update primary image index using `updatePrimaryImage` method of `AlturaItem` which will return the updated item.
 
   ```Typescript
@@ -432,6 +442,8 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
 
   > Remember that imageIndex starts at 0 and NOT 1
 
+  <p align="right"><a href="#top">back to top</a></p>
+
 ### _Altura Collection_
 
 You can get collection with specific address using `getCollection` of `Altura`, which will return instance of `AlturaCollection`.
@@ -440,8 +452,9 @@ You can get collection with specific address using `getCollection` of `Altura`, 
 const alturaCollection = await altura.getCollection(WALLET_ADDRESS);
 ```
 
-- Update property
-  You can update properties of collection using `update` method of `AlturaCollection` which will return updated collection.
+- #### Update property
+
+You can update properties of collection using `update` method of `AlturaCollection` which will return updated collection.
 
 ```Typescript
 // Update collection description
@@ -454,9 +467,11 @@ const response: {collection: IAlturaCollection} = await alturaCollection.update(
 const updateCollection = response.collection;
 ```
 
+<p align="right"><a href="#top">back to top</a></p>
+
 ### _Type Definitions_
 
-Users are represented by the `IAlturaUser` interface
+#### Users are represented by the `IAlturaUser` interface
 
 ```Typescript
 export interface IAlturaUser {
@@ -470,6 +485,96 @@ export interface IAlturaUser {
   socialLink: string;
   // Url of the user's profile image
   profilePicUrl: string;
+}
+```
+
+<p align="right"><a href="#top">back to top</a></p>
+
+#### Items are represented by the `IAlturaItem` interface
+
+```Typescript
+export interface IAlturaItem {
+  collectionAddress: string;
+  tokenId: number;
+  chainId: number;
+  name: string;
+  description: string;
+  image: string;
+  imageUrl: string;
+  primaryImageIndex?: number;
+  fileType: string;
+  isVideo: boolean;
+  creatorAddress: string;
+  like?: number;
+  views: number;
+  mintDate?: string;
+  royalty: number;
+  nsfw: boolean;
+  supply: number;
+  maxSupply: number;
+  stackable: boolean;
+  properties: {
+    name: string;
+    value: string;
+    static: boolean
+  }[];
+  isListed: boolean;
+  holders: number;
+  hasUnlockableContent: boolean;
+  unlockableContent: string | undefined;
+  creatorName: string;
+  collectionName: string;
+  uri: string;
+  isVerified: boolean;
+  website: string;
+  slug: string;
+}
+```
+
+<p align="right"><a href="#top">back to top</a></p>
+
+#### Collections are represented by the `IAlturaCollection` interface
+
+```Typescript
+export interface IAlturaCollection {
+  address: string;
+  name: string;
+  description: string;
+  genre: string;
+  image: string;
+  imageUrl: string;
+  ownerAddress: string;
+  slug: string;
+  uri: string;
+  website: string;
+  mintDate: string;
+  chainId: number;
+  holders: number;
+  volume_1d: number;
+  volume_1w: number;
+  volume_30d: number;
+  volume_all: number;
+}
+```
+
+<p align="right"><a href="#top">back to top</a></p>
+
+#### History events are represented by the `IAlturaEvents` interface {#altura-event-interface)
+
+```Typescript
+export interface IAlturaEvevnt {
+  id: string;
+  amount: string;
+  blockNumber: number;
+  chainId: number;
+  event: string;
+  from: string;
+  itemCollection: string;
+  itemRef: string;
+  timestamp: number;
+  to: string;
+  tokenId: number;
+  transactionHash: string;
 }
 ```
 
@@ -487,7 +592,7 @@ export interface IAlturaUser {
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right"><a href="#top">back to top</a></p>
 
 <!-- CONTRIBUTING -->
 
@@ -504,7 +609,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right"><a href="#top">back to top</a></p>
 
 <!-- LICENSE -->
 
@@ -512,7 +617,7 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right"><a href="#top">back to top</a></p>
 
 <!-- CONTACT -->
 
@@ -522,7 +627,7 @@ Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.c
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right"><a href="#top">back to top</a></p>
 
 <!-- ACKNOWLEDGMENTS -->
 
@@ -539,7 +644,7 @@ Use this space to list resources you find helpful and would like to give credit 
 - [Font Awesome](https://fontawesome.com)
 - [React Icons](https://react-icons.github.io/react-icons/search)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right"><a href="#top">back to top</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
