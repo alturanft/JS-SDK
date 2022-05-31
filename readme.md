@@ -199,6 +199,8 @@ const altura = new Altura(YOUR_API_KEY);
 
   <img src="https://1149877842-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fhh0EEO8VjaoTnh4KSaXS%2Fuploads%2Fftre8H7xTGgYITN2BKfi%2FScreen%20Shot%202022-05-08%20at%203.13.07%20PM.png?alt=media&token=3bbbe453-c191-4235-82f1-64df6b308a85" >
 
+<p align="right"><a href="#top">back to top</a></p>
+
 - #### Get all users
 
   You can fetch all users using `getUsers` method of `Altura`, which will return an array of users with pagination and sort and count of users.
@@ -311,9 +313,70 @@ const altura = new Altura(YOUR_API_KEY);
 
 <p align="right"><a href="#top">back to top</a></p>
 
+- #### Transfer Single Item
+
+  You can a item using `transferItem` method of `Altura` which will return transaction hash.
+
+  ```Typescript
+  const response: { txHash: string } = altura.transferItem(COLLECTION_ADDRESS, TOKEN_ID, AMOUNT, TO_ADDRESS);
+
+  const { txHash } = response;
+  ```
+
+  | No  | Parameter          | Datatype | Description                                                                                                                       |
+  | --- | ------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+  | 1   | collection_address | string   | The item's collection address                                                                                                     |
+  | 2   | token_id           | number   | The item's tokenId                                                                                                                |
+  | 3   | amount             | number   | The quantity of this particular item you wish to transfer. This operation will fail if you try to transfer more than your balance |
+  | 4   | to                 | string   | The recipient's EVM-compatible address (0x...)                                                                                    |
+
+- #### Transfer Several Items
+
+  You can transfer several items of particullar collection address using `transferItems` of `Altura` which return s transaction Hash;
+
+  ```Typescript
+  const response: {txHash: string} = await transferItems(
+    COLLECTION_ADDRESS,
+    TOKEN_IDS,
+    AMOUNTS,
+    TO_ADDRESS
+  );
+
+  const { txHash } = response;
+  ```
+
+  | No  | Parameter          | Datatype | Description                                                                                                           |
+  | --- | ------------------ | -------- | --------------------------------------------------------------------------------------------------------------------- |
+  | 1   | collection_address | string   | The item's collection address                                                                                         |
+  | 2   | token_ids          | number[] | An array of the token Id's you wish to transfer from the specified collection                                         |
+  | 3   | amounts            | number[] | An array of the amount of each tokenId you wish to transfer. This array must be the same length as the tokenIds array |
+  | 4   | to                 | string   | The recipient's EVM-compatible address (0x...)                                                                        |
+
+  > The length of TOKEN_IDS must be same with length of AMOUNTS
+
+- #### Mint Additional Supply
+
+  You can mint additional supply of particullar item using `mintAdditionalSupply` method of `Altura` which will return transaction hash.
+
+  ```Typescript
+  const response: { txHash: string } = altura.mintAdditionalSupply(
+    COLLECTION_ADDRESS,
+    TOKEN_ID,
+    AMOUNT,
+    TO_ADDRESS
+  );
+  ```
+
+  | No  | Parameter          | Datatype | Description                                                                                                                                                                             |
+  | --- | ------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | 1   | collection_address | string   | The item's collection address                                                                                                                                                           |
+  | 2   | token_id           | number   | The item's tokenId                                                                                                                                                                      |
+  | 3   | amount             | number   | The amount of additional supply you want to mint                                                                                                                                        |
+  | 4   | to                 | string   | The address you want to mint the additional supply to. You do not need to mint the additional supply to your own wallet, instead, you can mint them to someone else's wallet right away |
+
 ### _Altura User_
 
-You can get instance of `AlturaUser` using `getUser` method of `Alture` with the user's wallet address.
+You can get instance of `AlturaUser` using `getUser` method of `Altura` with the user's wallet address.
 
 ```Typescript
 const alturaUser = await altura.getUser(WALLET_ADDRESS);

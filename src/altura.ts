@@ -76,6 +76,7 @@ export class Altura {
       item.isVerified,
       item.website,
       item.slug,
+      item.otherImages,
       this.apiCall,
     );
   }
