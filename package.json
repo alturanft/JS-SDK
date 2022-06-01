@@ -1,5 +1,5 @@
 {
-  "name": "altura-js",
+  "name": "@altura/altura-js",
   "version": "1.0.0",
   "description": "Javascript SDK for the Altura NFT Marketplace",
   "license": "MIT",
