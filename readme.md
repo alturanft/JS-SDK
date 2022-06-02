@@ -76,11 +76,6 @@
         </li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 
 <!-- ABOUT THE PROJECT -->
@@ -113,7 +108,7 @@ Here's why:
 In your project, run:
 
 ```sh
-npm install --save altura-js
+npm install --save @altura/altura-js
 ```
 
 ### _Getting Your API Key_
@@ -171,7 +166,7 @@ To fund your developer account, log into the Developer Portal and click on depos
 You can get instance of `Altura` with your API key.
 
 ```Typescript
-import { Altura } from "altura-js";
+import { Altura } from "@altura/altura-js";
 
 const altura = new Altura(YOUR_API_KEY);
 ```
