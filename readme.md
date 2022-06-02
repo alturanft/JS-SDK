@@ -1,7 +1,5 @@
 <div id="top"></div>
 
-[![MIT License][license-shield]][license-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -78,11 +76,6 @@
         </li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 
 <!-- ABOUT THE PROJECT -->
@@ -115,7 +108,7 @@ Here's why:
 In your project, run:
 
 ```sh
-npm install --save altura-js
+npm install --save @altura/altura-js
 ```
 
 ### _Getting Your API Key_
@@ -173,7 +166,7 @@ To fund your developer account, log into the Developer Portal and click on depos
 You can get instance of `Altura` with your API key.
 
 ```Typescript
-import {Altura} from "altura-js";
+import { Altura } from "@altura/altura-js";
 
 const altura = new Altura(YOUR_API_KEY);
 ```
@@ -202,7 +195,7 @@ const altura = new Altura(YOUR_API_KEY);
   ```Typescript
   const response: { authenticated: boolean } = await altura.authenticateUser(WALLET_ADDRESS, ALTURA_GUARD);
 
-  const {authenticated} = response;
+  const { authenticated } = response;
   ```
 
   > Altura Guard codes are renewed every 60 seconds
@@ -227,7 +220,7 @@ const altura = new Altura(YOUR_API_KEY);
   });
 
   // Get filtered result
-  const resonse: {users: IAlturaUser[], count: number} = await altura.getUsers(
+  const resonse: { users: IAlturaUser[], count: number } = await altura.getUsers(
     {}, // Default pagination
     {
       name: 'AlturaNFT'
@@ -347,7 +340,7 @@ const altura = new Altura(YOUR_API_KEY);
   You can transfer several items of particullar collection address using `transferItems` of `Altura` which return s transaction Hash;
 
   ```Typescript
-  const response: {txHash: string} = await transferItems(
+  const response: { txHash: string } = await transferItems(
     COLLECTION_ADDRESS,
     TOKEN_IDS,
     AMOUNTS,
@@ -406,7 +399,7 @@ const alturaUser = await altura.getUser(WALLET_ADDRESS);
   const response: { items: IAlturaItem[], count: number } = await alturaUser.getItems();
 
   // Customize pagination, sort and return result
-  const response: {items: IAlturaItem[], count: number} = await alturaUser.getItems({
+  const response: { items: IAlturaItem[], count: number } = await alturaUser.getItems({
     perPage: 20,
     page: 1,
     sortBy: 'mintDate',
@@ -417,7 +410,7 @@ const alturaUser = await altura.getUser(WALLET_ADDRESS);
   });
 
   // Get filtered result
-  const response: {items: IAlturaItem[], count: number} = await alturaUser.getItems(
+  const response: { items: IAlturaItem[], count: number } = await alturaUser.getItems(
     {}, // Default pagination
     {
       collectionAddress: COLLECTION_ADDRESS
@@ -453,10 +446,10 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   You can get holders of current item using `getHolders` method of `AlturaUser`, which returns an array of holders.
 
   ```Typescript
-  const response: {holders: IAlturaUser[]} = await alturaItem.getHolders();
+  const response: { holders: IAlturaUser[] } = await alturaItem.getHolders();
 
   // Customize pagination and result
-  const response: {holders: IAlturaUser[]} = await alturaItem.getHolders({
+  const response: { holders: IAlturaUser[] } = await alturaItem.getHolders({
     perPage: 20,
     page: 1,
     includeListed: false
@@ -478,10 +471,10 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   You can get history of current item using `getHistory` method of `AlturaItem` which return an array of events.
 
   ```Typescript
-  const response: {events: IAlturaEvent[]} = await alturaItem.getHistory();
+  const response: { events: IAlturaEvent[] } = await alturaItem.getHistory();
 
   // Customize pagination
-  const response: {eventa: IAlturaEvent[]} = await alturaItem.getHistory({
+  const response: { eventa: IAlturaEvent[] } = await alturaItem.getHistory({
     perPage: 20,
     page: 1
   });
@@ -501,7 +494,7 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   You can update property of current item using `updateProperty` method of `AlturaItem` which will return the updated item.
 
   ```Typescript
-  const response: {item: IAlturaItem} = await alturaItem.updateProperty(PROPERTY_NAME, PROPERTY_VALUE);
+  const response: { item: IAlturaItem } = await alturaItem.updateProperty(PROPERTY_NAME, PROPERTY_VALUE);
 
   const updatedItem = response.item;
   ```
@@ -514,7 +507,7 @@ const alturaItem = await altura.getItem(COLLECTION_ADDRESS, TOKEN_ID);
   You can update primary image index using `updatePrimaryImage` method of `AlturaItem` which will return the updated item.
 
   ```Typescript
-  const response: {item: IAlturaItem} = await alturaItem.updatePrimaryImage(IMAGE_INDEX);
+  const response: { item: IAlturaItem } = await alturaItem.updatePrimaryImage(IMAGE_INDEX);
 
   const updatedItem = response.item;
   ```
@@ -537,7 +530,7 @@ You can update properties of collection using `update` method of `AlturaCollecti
 
 ```Typescript
 // Update collection description
-const response: {collection: IAlturaCollection} = await alturaCollection.update(
+const response: { collection: IAlturaCollection } = await alturaCollection.update(
   {
     description: NEW_DESCRIPTION
   } // Properties to update here
@@ -616,7 +609,7 @@ export interface IAlturaItem {
   uri: string;
   isVerified: boolean;
   website: string;
-  slug: string;\
+  slug: string;
 }
 ```
 
@@ -670,20 +663,3 @@ export interface IAlturaEvevnt {
   transactionHash: string;
 }
 ```
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right"><a href="#top">back to top</a></p>
