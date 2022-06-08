@@ -13,7 +13,7 @@
     The #1 Cross-Chain Gaming NFT Marketplace
     <p>Powering the Future of Gaming</p>
     <br />
-    <a href="https://app.alturanft.com/">View Demo</a>
+    <a href="https://app.alturanft.com/">Marketplace</a>
     ·
     <a href="https://github.com/alturanft/JS-SDK/issues">Report Bug</a>
     ·
