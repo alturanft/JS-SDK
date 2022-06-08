@@ -1,5 +1,5 @@
 import { ApiCall } from './apiCall';
-import { IAlturaItem } from './types';
+import { AlturaItem } from './item';
 import { itemFromJson } from './utils';
 
 export class AlturaUser {
@@ -43,7 +43,7 @@ export class AlturaUser {
       stateOnly?: boolean;
     },
     searchQuery?: object,
-  ): Promise<{ items: IAlturaItem[]; count: number }> {
+  ): Promise<{ items: AlturaItem[]; count: number }> {
     let query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -58,7 +58,7 @@ export class AlturaUser {
     const json = await this.apiCall.get<{ items: object[]; count: number }>(`user/items/${this._address}`, query);
 
     return {
-      items: json.items.map((item) => itemFromJson(item)),
+      items: json.items.map((item) => itemFromJson(item, this.apiCall)),
       count: json.count,
     };
   }

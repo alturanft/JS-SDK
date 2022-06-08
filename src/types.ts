@@ -66,7 +66,7 @@ export interface IAlturaCollection {
   volume_all: number;
 }
 
-export interface IAlturaEvevnt {
+export interface IAlturaEvent {
   id: string;
   amount: string;
   blockNumber: number;

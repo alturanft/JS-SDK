@@ -1,5 +1,6 @@
 import { ApiCall } from './apiCall';
-import { IAlturaEvevnt, IAlturaItem, IAlturaUser, IItemProperty } from './types';
+import { IAlturaEvent, IAlturaItem, IItemProperty } from './types';
+import { AlturaUser } from './user';
 import { eventFromJson, itemFromJson, userFromJson } from './utils';
 
 export class AlturaItem {
@@ -128,7 +129,7 @@ export class AlturaItem {
     perPage?: number;
     page?: number;
     includeListed?: boolean;
-  }): Promise<{ holders: IAlturaUser[]; count: number }> {
+  }): Promise<{ holders: AlturaUser[]; count: number }> {
     const query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -141,7 +142,7 @@ export class AlturaItem {
     );
 
     return {
-      holders: data.holders.map((h) => userFromJson(h)),
+      holders: data.holders.map((h) => userFromJson(h, this.apiCall)),
       count: data.count,
     };
   }
@@ -151,7 +152,7 @@ export class AlturaItem {
    * @param perPage The number of users to return (default: 24)
    * @param page The offset for returned users. Calculated as (page -1) * perPage (default: 1)
    */
-  public async getHistory(params?: { perPage?: number; page?: number }): Promise<{ events: IAlturaEvevnt[] }> {
+  public async getHistory(params?: { perPage?: number; page?: number }): Promise<{ events: IAlturaEvent[] }> {
     const query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -172,7 +173,7 @@ export class AlturaItem {
    * @param propertyValue The new value you want to set the property to
    * @returns updated item
    */
-  public async updateProperty(propertyName: string, propertyValue: string): Promise<{ item: IAlturaItem }> {
+  public async updateProperty(propertyName: string, propertyValue: string): Promise<{ item: AlturaItem }> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_property',
       { apiKey: this.apiCall.apiKey },
@@ -185,7 +186,7 @@ export class AlturaItem {
       },
     );
     return {
-      item: itemFromJson(json.item),
+      item: itemFromJson(json.item, this.apiCall),
     };
   }
 
@@ -194,7 +195,7 @@ export class AlturaItem {
    * @param imageIndex The index of the image you wish to change to (index starts at 0)
    * @returns
    */
-  public async updatePrimaryImage(imageIndex: number): Promise<{ item: IAlturaItem }> {
+  public async updatePrimaryImage(imageIndex: number): Promise<{ item: AlturaItem }> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_primary_image',
       { apiKey: this.apiCall.apiKey },
@@ -207,7 +208,7 @@ export class AlturaItem {
     );
 
     return {
-      item: itemFromJson(json.item),
+      item: itemFromJson(json.item, this.apiCall),
     };
   }
 }

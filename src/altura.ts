@@ -2,7 +2,7 @@ import { ApiCall } from './apiCall';
 import { AlturaUser } from './user';
 import { AlturaItem } from './item';
 import { AlturaCollection } from './collection';
-import { IAlturaCollection, IAlturaItem, IAlturaUser } from './types';
+import { IAlturaCollection, IAlturaUser } from './types';
 import { collectionFromJson, itemFromJson, userFromJson } from './utils';
 
 export class Altura {
@@ -31,9 +31,7 @@ export class Altura {
    */
   public async getUser(address: string): Promise<AlturaUser> {
     const json = await this.apiCall.get<{ user: IAlturaUser }>(`user/${address}`);
-    const user = userFromJson(json.user);
-
-    return new AlturaUser(user.address, user.name, user.bio, user.profilePicUrl, user.socialLink, this.apiCall);
+    return userFromJson(json.user, this.apiCall);
   }
 
   /**
@@ -42,43 +40,8 @@ export class Altura {
    * @param tokenId Token ID of item in collection
    */
   public async getItem(collectionAddress: string, tokenId: number): Promise<AlturaItem> {
-    const json = await this.apiCall.get<{ item: IAlturaItem }>(`item/${collectionAddress}/${tokenId}`);
-    const item = itemFromJson(json.item);
-
-    return new AlturaItem(
-      item.collectionAddress,
-      item.tokenId,
-      item.chainId,
-      item.name,
-      item.description,
-      item.image,
-      item.imageUrl,
-      item.primaryImageIndex,
-      item.fileType,
-      item.isVideo,
-      item.creatorAddress,
-      item.like,
-      item.views,
-      item.mintDate,
-      item.royalty,
-      item.nsfw,
-      item.supply,
-      item.maxSupply,
-      item.stackable,
-      item.properties,
-      item.isListed,
-      item.holders,
-      item.hasUnlockableContent,
-      item.unlockableContent,
-      item.creatorName,
-      item.collectionName,
-      item.uri,
-      item.isVerified,
-      item.website,
-      item.slug,
-      item.otherImages,
-      this.apiCall,
-    );
+    const json = await this.apiCall.get<{ item: any }>(`item/${collectionAddress}/${tokenId}`);
+    return itemFromJson(json.item, this.apiCall);
   }
 
   /**
@@ -87,28 +50,7 @@ export class Altura {
    */
   public async getCollection(address: string): Promise<AlturaCollection> {
     const json = await this.apiCall.get<{ collection: IAlturaCollection }>(`collection/${address}`);
-    const collection = collectionFromJson(json.collection);
-
-    return new AlturaCollection(
-      collection.address,
-      collection.name,
-      collection.description,
-      collection.genre,
-      collection.image,
-      collection.imageUrl,
-      collection.ownerAddress,
-      collection.slug,
-      collection.uri,
-      collection.website,
-      collection.mintDate,
-      collection.chainId,
-      collection.holders,
-      collection.volume_1d,
-      collection.volume_1w,
-      collection.volume_30d,
-      collection.volume_all,
-      this.apiCall,
-    );
+    return collectionFromJson(json.collection, this.apiCall);
   }
 
   /**
@@ -128,7 +70,7 @@ export class Altura {
       sortDir?: 'desc' | 'asc';
     },
     searchQuery?: object,
-  ): Promise<{ users: IAlturaUser[]; count: number }> {
+  ): Promise<{ users: AlturaUser[]; count: number }> {
     let query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -139,7 +81,7 @@ export class Altura {
     const json = await this.apiCall.get<{ users: object[]; count: number }>('user', query);
 
     return {
-      users: json.users.map((j) => userFromJson(j)),
+      users: json.users.map((j) => userFromJson(j, this.apiCall)),
       count: json.count,
     };
   }
@@ -175,10 +117,10 @@ export class Altura {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ items: IAlturaItem[]; count: number }>('item', query);
+    const json = await this.apiCall.get<{ items: any[]; count: number }>('item', query);
 
     return {
-      items: json.items.map((item) => itemFromJson(item)),
+      items: json.items.map((item) => itemFromJson(item, this.apiCall)),
       count: json.count,
     };
   }
@@ -199,7 +141,7 @@ export class Altura {
       sortDir?: 'desc' | 'asc';
     },
     searchQuery?: object,
-  ): Promise<{ collections: IAlturaCollection[]; count: number }> {
+  ): Promise<{ collections: AlturaCollection[]; count: number }> {
     let query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -211,7 +153,7 @@ export class Altura {
     const json = await this.apiCall.get<{ collections: IAlturaCollection[]; count: number }>('collection', query);
 
     return {
-      collections: json.collections.map((c) => collectionFromJson(c)),
+      collections: json.collections.map((c) => collectionFromJson(c, this.apiCall)),
       count: json.count,
     };
   }

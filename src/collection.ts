@@ -73,7 +73,7 @@ export class AlturaCollection {
     website?: string;
     genre?: string;
   }): Promise<{
-    collection: IAlturaCollection;
+    collection: AlturaCollection;
   }> {
     const json = await this.apiCall.post<{ collection: object }>(
       `collection/${this._address}/update`,
@@ -81,7 +81,7 @@ export class AlturaCollection {
       params,
     );
     return {
-      collection: collectionFromJson(json.collection),
+      collection: collectionFromJson(json.collection, this.apiCall),
     };
   }
 }
