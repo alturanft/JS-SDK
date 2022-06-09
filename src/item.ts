@@ -1,120 +1,18 @@
 import { ApiCall } from './apiCall';
-import { IAlturaEvent, IAlturaItem, IItemProperty } from './types';
+import { IAlturaEvent, TAlturaHolder, TAlturaUpdatedItem } from './types';
 import { AlturaUser } from './user';
-import { eventFromJson, itemFromJson, userFromJson } from './utils';
+import { eventFromJson, holderInstanceFromJson, updatedItemInstanceFromJson } from './utils';
 
 export class AlturaItem {
-  _collectionAddress: string;
-  _tokenId: number;
-  _chainId: number;
-  _name: string;
-  _description: string;
-  _image: string;
-  _imageUrl: string;
-  _primaryImageIndex: number | undefined;
-  _fileType: string;
-  _isVideo: boolean;
-  _creatorAddress: string;
-  _like: number | undefined;
-  _views: number;
-  _mintDate: string | undefined;
-  _royalty: number;
-  _nsfw: boolean;
-  _supply: number;
-  _maxSupply: number;
-  _stackable: boolean;
-  _properties: IItemProperty[];
-  _isListed: boolean;
-  _holders: number;
-  _hasUnlockableContent: boolean;
-  _unlockableContent: string | undefined;
-  _creatorName: string;
-  _collectionName: string;
-  _uri: string;
-  _isVerified: boolean;
-  _website: string;
-  _slug: string;
-  _otherImages: {
-    imageHash: string;
-    image: string;
-    fileType: string;
-    isVideo: boolean;
-  }[];
+  collectionAddress: string;
+  tokenId: number;
 
   private apiCall: ApiCall;
 
-  constructor(
-    collectionAddress: string,
-    tokenId: number,
-    chainId: number,
-    name: string,
-    description: string,
-    image: string,
-    imageUrl: string,
-    primaryImageIndex: number | undefined,
-    fileType: string,
-    isVideo: boolean,
-    creatorAddress: string,
-    like: number | undefined,
-    views: number,
-    mintDate: string | undefined,
-    royalty: number,
-    nsfw: boolean,
-    supply: number,
-    maxSupply: number,
-    stackable: boolean,
-    properties: IItemProperty[],
-    isListed: boolean,
-    holders: number,
-    hasUnlockableContent: boolean,
-    unlockableContent: string | undefined,
-    creatorName: string,
-    collectionName: string,
-    uri: string,
-    isVerified: boolean,
-    website: string,
-    slug: string,
-    otherImages: {
-      imageHash: string;
-      image: string;
-      fileType: string;
-      isVideo: boolean;
-    }[],
-
-    apiCall: ApiCall,
-  ) {
-    this._collectionAddress = collectionAddress;
-    this._tokenId = tokenId;
-    this._chainId = chainId;
-    this._name = name;
-    this._description = description;
-    this._image = image;
-    this._imageUrl = imageUrl;
-    this._primaryImageIndex = primaryImageIndex;
-    this._fileType = fileType;
-    this._isVideo = isVideo;
-    this._creatorAddress = creatorAddress;
-    this._like = like;
-    this._views = views;
-    this._mintDate = mintDate;
-    this._royalty = royalty;
-    this._nsfw = nsfw;
-    this._supply = supply;
-    this._maxSupply = maxSupply;
-    this._stackable = stackable;
-    this._properties = properties;
-    this._isListed = isListed;
-    this._holders = holders;
-    this._hasUnlockableContent = hasUnlockableContent;
-    this._unlockableContent = unlockableContent;
-    this._creatorName = creatorName;
-    this._collectionName = collectionName;
-    this._uri = uri;
-    this._isVerified = isVerified;
-    this._website = website;
-    this._slug = slug;
-    this._otherImages = otherImages;
-    this.apiCall = apiCall;
+  constructor(_collectionAddress: string, _tokenId: number, _apiCall: ApiCall) {
+    this.collectionAddress = _collectionAddress;
+    this.tokenId = _tokenId;
+    this.apiCall = _apiCall;
   }
 
   /**
@@ -129,7 +27,7 @@ export class AlturaItem {
     perPage?: number;
     page?: number;
     includeListed?: boolean;
-  }): Promise<{ holders: AlturaUser[]; count: number }> {
+  }): Promise<{ holders: (AlturaUser & TAlturaHolder)[]; count: number }> {
     const query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -137,12 +35,12 @@ export class AlturaItem {
     };
 
     const data = await this.apiCall.get<{ holders: object[]; count: number }>(
-      `item/holders/${this._collectionAddress}/${this._tokenId}`,
+      `item/holders/${this.collectionAddress}/${this.tokenId}`,
       query,
     );
 
     return {
-      holders: data.holders.map((h) => userFromJson(h, this.apiCall)),
+      holders: data.holders.map((h) => holderInstanceFromJson(h, this.apiCall)),
       count: data.count,
     };
   }
@@ -159,7 +57,7 @@ export class AlturaItem {
     };
 
     const data = await this.apiCall.get<{ events: object[] }>(
-      `item/events/${this._collectionAddress}/${this._tokenId}`,
+      `item/events/${this.collectionAddress}/${this.tokenId}`,
       query,
     );
     return {
@@ -173,20 +71,22 @@ export class AlturaItem {
    * @param propertyValue The new value you want to set the property to
    * @returns updated item
    */
-  public async updateProperty(propertyName: string, propertyValue: string): Promise<{ item: AlturaItem }> {
+  public async updateProperty(
+    propertyName: string,
+    propertyValue: string,
+  ): Promise<{ item: AlturaItem & TAlturaUpdatedItem }> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_property',
       { apiKey: this.apiCall.apiKey },
       {
-        address: this._collectionAddress,
-        tokenId: this._tokenId,
-        chainId: this._chainId,
+        address: this.collectionAddress,
+        tokenId: this.tokenId,
         propertyName,
         propertyValue,
       },
     );
     return {
-      item: itemFromJson(json.item, this.apiCall),
+      item: updatedItemInstanceFromJson(json.item, this.apiCall),
     };
   }
 
@@ -195,20 +95,19 @@ export class AlturaItem {
    * @param imageIndex The index of the image you wish to change to (index starts at 0)
    * @returns
    */
-  public async updatePrimaryImage(imageIndex: number): Promise<{ item: AlturaItem }> {
+  public async updatePrimaryImage(imageIndex: number): Promise<{ item: AlturaItem & TAlturaUpdatedItem }> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_primary_image',
       { apiKey: this.apiCall.apiKey },
       {
-        address: this._collectionAddress,
-        tokenId: this._tokenId,
-        chainId: this._chainId,
+        address: this.collectionAddress,
+        tokenId: this.tokenId,
         imageIndex,
       },
     );
 
     return {
-      item: itemFromJson(json.item, this.apiCall),
+      item: updatedItemInstanceFromJson(json.item, this.apiCall),
     };
   }
 }

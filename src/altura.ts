@@ -2,8 +2,8 @@ import { ApiCall } from './apiCall';
 import { AlturaUser } from './user';
 import { AlturaItem } from './item';
 import { AlturaCollection } from './collection';
-import { IAlturaCollection, IAlturaUser } from './types';
-import { collectionFromJson, itemFromJson, userFromJson } from './utils';
+import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaItemState, TAlturaUser } from './types';
+import { collectionInstanceFromJson, itemInstanceFromJson, userInstanceFromJson } from './utils';
 
 export class Altura {
   apiCall: ApiCall;
@@ -29,28 +29,40 @@ export class Altura {
    * Takes a user's wallet address and returns the instance of User class
    * @param address The user's wallet address
    */
-  public async getUser(address: string): Promise<AlturaUser> {
-    const json = await this.apiCall.get<{ user: IAlturaUser }>(`user/${address}`);
-    return userFromJson(json.user, this.apiCall);
+  public async getUser(address: string): Promise<AlturaUser & TAlturaUser> {
+    const json = await this.apiCall.get<{ user: object }>(`user/${address}`);
+    return userInstanceFromJson(json.user, this.apiCall);
   }
 
   /**
    * Takes a item's collection address and tokenId and returns the instance of Item class
    * @param collectionAddress Collection Address of item
    * @param tokenId Token ID of item in collection
+   * @param options Set slim or stateOnly to get simplified result
    */
-  public async getItem(collectionAddress: string, tokenId: number): Promise<AlturaItem> {
-    const json = await this.apiCall.get<{ item: any }>(`item/${collectionAddress}/${tokenId}`);
-    return itemFromJson(json.item, this.apiCall);
+  public async getItem(
+    collectionAddress: string,
+    tokenId: number,
+    options?: {
+      slim?: boolean;
+      stateOnly?: boolean;
+    },
+  ): Promise<(AlturaItem & TAlturaItemState) | (AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem)> {
+    let query = { slim: false, stateOnly: false };
+    if (options && options.slim) query = { ...query, slim: true };
+    if (options && options.stateOnly) query = { ...query, stateOnly: true };
+
+    const json = await this.apiCall.get<{ item: any }>(`item/${collectionAddress}/${tokenId}`, query);
+    return itemInstanceFromJson(json.item, this.apiCall, query);
   }
 
   /**
    * Takes a collection's address and returns the instance of Collection class
    * @param address Address of collection
    */
-  public async getCollection(address: string): Promise<AlturaCollection> {
-    const json = await this.apiCall.get<{ collection: IAlturaCollection }>(`collection/${address}`);
-    return collectionFromJson(json.collection, this.apiCall);
+  public async getCollection(address: string): Promise<AlturaCollection & TAlturaCollection> {
+    const json = await this.apiCall.get<{ collection: TAlturaCollection }>(`collection/${address}`);
+    return collectionInstanceFromJson(json.collection, this.apiCall);
   }
 
   /**
@@ -70,7 +82,7 @@ export class Altura {
       sortDir?: 'desc' | 'asc';
     },
     searchQuery?: object,
-  ): Promise<{ users: AlturaUser[]; count: number }> {
+  ): Promise<{ users: (AlturaUser & TAlturaUser)[]; count: number }> {
     let query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -81,7 +93,7 @@ export class Altura {
     const json = await this.apiCall.get<{ users: object[]; count: number }>('user', query);
 
     return {
-      users: json.users.map((j) => userFromJson(j, this.apiCall)),
+      users: json.users.map((j) => userInstanceFromJson(j, this.apiCall)),
       count: json.count,
     };
   }
@@ -106,7 +118,10 @@ export class Altura {
       stateOnly?: boolean;
     },
     searchQuery?: object,
-  ): Promise<{ items: object[]; count: number }> {
+  ): Promise<{
+    items: ((AlturaItem & TAlturaItemState) | (AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem))[];
+    count: number;
+  }> {
     let query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -120,7 +135,7 @@ export class Altura {
     const json = await this.apiCall.get<{ items: any[]; count: number }>('item', query);
 
     return {
-      items: json.items.map((item) => itemFromJson(item, this.apiCall)),
+      items: json.items.map((item) => itemInstanceFromJson(item, this.apiCall, query)),
       count: json.count,
     };
   }
@@ -150,10 +165,10 @@ export class Altura {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ collections: IAlturaCollection[]; count: number }>('collection', query);
+    const json = await this.apiCall.get<{ collections: TAlturaCollection[]; count: number }>('collection', query);
 
     return {
-      collections: json.collections.map((c) => collectionFromJson(c, this.apiCall)),
+      collections: json.collections.map((c) => collectionInstanceFromJson(c, this.apiCall)),
       count: json.count,
     };
   }

@@ -9,7 +9,7 @@ export class ApiCall {
   /**
    * Base URL for the API
    */
-  private apiBaseUrl = 'https://app.alturanft.com/api/v2/';
+  private apiBaseUrl = 'https://api.alturanft.com/api/v2/';
   /**
    * ApiKey generated from Developer portal
    */
@@ -31,8 +31,11 @@ export class ApiCall {
    * @param query Data to send. Will be stringified using QueryString
    */
   public async get<T>(apiPath: string, query: object = {}): Promise<T> {
-    const qs = QueryString.stringify(query);
-    const url = `${apiPath}?${qs}`;
+    let url = `${apiPath}`;
+    if (Object.keys(query).length > 0) {
+      const qs = QueryString.stringify(query);
+      url = `${apiPath}?${qs}`;
+    }
 
     const response = await this._fetch(url);
     return response.json();
@@ -46,10 +49,15 @@ export class ApiCall {
    * @param opts RequestInit opts, similar to Fetch API.
    */
   public async post<T>(apiPath: string, query: object = {}, body?: object, opts: RequestInit = {}): Promise<T> {
-    const qs = QueryString.stringify(query);
-    const url = `${apiPath}?${qs}`;
+    let url = apiPath;
+    if (Object.keys(query).length > 0) {
+      const qs = QueryString.stringify(query);
+      url = `${apiPath}?${qs}`;
+    }
+
     const response = await this._fetch(url, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined,
       ...opts,
     });
@@ -66,8 +74,6 @@ export class ApiCall {
     const apiKey = this.apiKey;
     const finalUrl = apiBase + apiPah;
 
-    this.logger(`Sending request: ${finalUrl} ${JSON.stringify(opts).slice(0, 100)}...`);
-
     return fetch(finalUrl, opts).then(async (res) => {
       return this._handleApiResponse(res);
     });
@@ -75,7 +81,6 @@ export class ApiCall {
 
   private async _handleApiResponse(response: Response) {
     if (response.ok) {
-      this.logger(`Got success: ${response.status}`);
       return response;
     }
 

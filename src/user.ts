@@ -1,22 +1,17 @@
 import { ApiCall } from './apiCall';
 import { AlturaItem } from './item';
-import { itemFromJson } from './utils';
+import { TAlturaUserItem, TAlturaUserItemSlim, TAlturaUserItemState } from './types';
+import { userItemInstanceFromJson } from './utils';
 
 export class AlturaUser {
-  _name: string;
-  _address: string;
-  _bio: string;
-  _profilePicUrl: string;
-  _socialLink: string;
+  name: string;
+  address: string;
   private apiCall: ApiCall;
 
-  constructor(address: string, name: string, bio: string, profilePicUrl: string, socialLink: string, apiCall: ApiCall) {
-    this._address = address;
-    this._name = name;
-    this._socialLink = socialLink;
-    this._profilePicUrl = profilePicUrl;
-    this._bio = bio;
-    this.apiCall = apiCall;
+  constructor(_address: string, _name: string, _apiCall: ApiCall) {
+    this.address = _address;
+    this.name = _name;
+    this.apiCall = _apiCall;
   }
 
   /**
@@ -43,7 +38,14 @@ export class AlturaUser {
       stateOnly?: boolean;
     },
     searchQuery?: object,
-  ): Promise<{ items: AlturaItem[]; count: number }> {
+  ): Promise<{
+    items: (
+      | (AlturaItem & TAlturaUserItemState)
+      | (AlturaItem & TAlturaUserItemSlim)
+      | (AlturaItem & TAlturaUserItem)
+    )[];
+    count: number;
+  }> {
     let query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
@@ -55,10 +57,10 @@ export class AlturaUser {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ items: object[]; count: number }>(`user/items/${this._address}`, query);
+    const json = await this.apiCall.get<{ items: object[]; count: number }>(`user/items/${this.address}`, query);
 
     return {
-      items: json.items.map((item) => itemFromJson(item, this.apiCall)),
+      items: json.items.map((item) => userItemInstanceFromJson(item, this.apiCall, query)),
       count: json.count,
     };
   }
