@@ -21,7 +21,7 @@ export const userInstanceFromJson = (user: object, apiCall: ApiCall): AlturaUser
   const userInstance: AlturaUser = new AlturaUser(user[`address`], user[`name`], apiCall);
   const alturaUser: TAlturaUser = userFromJson(user);
 
-  Object.entries(alturaUser).forEach((key, value) => {
+  Object.entries(alturaUser).forEach(([key, value]) => {
     userInstance[`${key}`] = value;
   });
 
