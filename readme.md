@@ -39,4 +39,4 @@ yarn add @altura/altura-js
 
 ## **Usage**
 
-Find out detailed documentation [here](https://docs.js.alturanft.com/js-sdk-reference/getting-started)
+Find detailed documentation [here](https://docs.js.alturanft.com/js-sdk-reference/getting-started)

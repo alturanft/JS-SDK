@@ -4,7 +4,7 @@
   "description": "Javascript SDK for AlturaNFT",
   "license": "MIT",
   "author": "Altura Developers",
-  "homepage": "https://docs.v2.alturanft.com/api-reference",
+  "homepage": "https://www.alturanft.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alturanft/JS-SDK.git"
