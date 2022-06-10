@@ -1,7 +1,7 @@
 {
   "name": "@altura/altura-js",
   "version": "1.0.6",
-  "description": "Javascript SDK for the Altura NFT Marketplace",
+  "description": "Javascript SDK for AlturaNFT",
   "license": "MIT",
   "author": "Altura Developers",
   "homepage": "https://docs.v2.alturanft.com/api-reference",
