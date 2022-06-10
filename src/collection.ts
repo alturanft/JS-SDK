@@ -7,10 +7,7 @@ export class AlturaCollection {
   address: string;
   private apiCall: ApiCall;
 
-  constructor(
-    address: string,
-    apiCall: ApiCall,
-  ) {
+  constructor(address: string, apiCall: ApiCall) {
     this.address = address;
     this.apiCall = apiCall;
   }

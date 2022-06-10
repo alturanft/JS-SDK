@@ -35,10 +35,7 @@ export class AlturaUser {
     },
     searchQuery?: object,
   ): Promise<{
-    items: (
-      | (AlturaItem & TAlturaUserItemSlim)
-      | (AlturaItem & TAlturaUserItem)
-    )[];
+    items: ((AlturaItem & TAlturaUserItemSlim) | (AlturaItem & TAlturaUserItem))[];
     count: number;
   }> {
     let query = {
@@ -46,7 +43,7 @@ export class AlturaUser {
       page: params && params.page ? params.page : 1,
       sortBy: params && params.sortBy ? params.sortBy : 'mintDate',
       sortDir: params && params.sortDir ? params.sortDir : 'desc',
-      includeListed: params && params.hasOwnProperty("includeListed") ? params.includeListed : true,
+      includeListed: params && params.hasOwnProperty('includeListed') ? params.includeListed : true,
       slim: params && params.slim ? params.slim : false,
     };
     if (searchQuery) query = { ...query, ...searchQuery };

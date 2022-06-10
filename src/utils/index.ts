@@ -49,14 +49,14 @@ export const updatedItemInstanceFromJson = (item: object, apiCall: ApiCall): Alt
 export const itemInstanceFromJson = (
   item: object,
   apiCall: ApiCall,
-  query: { slim: boolean; },
+  query: { slim: boolean },
 ): (AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem) => {
   const itemInstance: AlturaItem = new AlturaItem(item[`collectionAddress`], item[`tokenId`], apiCall);
 
   let alturaItem: TAlturaItem | TAlturaItemSlim;
   if (query.slim) {
     alturaItem = itemSlimFromJson(item);
-  }else{
+  } else {
     alturaItem = itemFromJson(item);
   }
 
@@ -70,14 +70,14 @@ export const itemInstanceFromJson = (
 export const userItemInstanceFromJson = (
   item: object,
   apiCall: ApiCall,
-  query: { slim: boolean; },
+  query: { slim: boolean },
 ): (AlturaItem & TAlturaUserItemSlim) | (AlturaItem & TAlturaUserItem) => {
   const itemInstance: AlturaItem = new AlturaItem(item[`collectionAddress`], item[`tokenId`], apiCall);
 
   let alturaItem: TAlturaItem | TAlturaItemSlim;
   if (query.slim) {
     alturaItem = itemSlimFromJson(item);
-  }else{
+  } else {
     alturaItem = itemFromJson(item);
   }
 
@@ -86,19 +86,14 @@ export const userItemInstanceFromJson = (
   });
   itemInstance[`userBalance`] = item[`userBalance`];
 
-  return itemInstance as
-    | (AlturaItem & TAlturaUserItemSlim)
-    | (AlturaItem & TAlturaUserItem);
+  return itemInstance as (AlturaItem & TAlturaUserItemSlim) | (AlturaItem & TAlturaUserItem);
 };
 
 export const collectionInstanceFromJson = (
   collection: object,
   apiCall: ApiCall,
 ): AlturaCollection & TAlturaCollection => {
-  const collectionInstance = new AlturaCollection(
-    collection[`address`],
-    apiCall,
-  );
+  const collectionInstance = new AlturaCollection(collection[`address`], apiCall);
 
   const alturaCollection = collectionFromJson(collection);
 
@@ -113,10 +108,7 @@ export const updatedCollectionInstanceFromJson = (
   collection: object,
   apiCall: ApiCall,
 ): AlturaCollection & TAlturaCollection => {
-  const collectionInstance = new AlturaCollection(
-    collection[`address`],
-    apiCall,
-  );
+  const collectionInstance = new AlturaCollection(collection[`address`], apiCall);
 
   const alturaCollection = collectionFromJson(collection);
 
@@ -184,39 +176,39 @@ const itemSlimFromJson = (item: object): TAlturaItemSlim => {
 
 const itemFromJson = (item: object): TAlturaItem => {
   return {
-    name: item['name'],
-    description: item['description'],
-    properties: item['properties'],
-    tokenId: item['tokenId'],
-    collectionAddress: item['collectionAddress'],
-    chainId: item['chainId'],
-    royalty: item['royalty'],
-    creatorAddress: item['creatorAddress'],
-    mintDate: item['mintDate'],
-    stackable: item['stackable'],
-    supply: item['supply'],
-    maxSupply: item['maxSupply'],
-    image: item['image'],
-    imageHash: item['imageHash'],
-    imageUrl: item['imageUrl'],
-    fileType: item['fileType'],
-    isVideo: item['isVideo'],
-    otherImageVisibility: item['otherImageVisibility'],
-    holders: item['holders'],
-    listers: item['listers'],
-    likes: item['likes'],
-    views: item['views'],
-    isListed: item['isListed'],
-    mostRecentListing: item['mostRecentListing'],
-    cheapestListingPrice: item['cheapestListingPrice'],
-    cheapestListingCurrency: item['cheapestListingCurrency'],
-    cheapestListingUSD: item['cheapestListingUSD'],
-    nsfw: item['nsfw'],
-    isVerified: item['isVerified'],
-    hasUnlockableContent: item['hasUnlockableContent'],
-    imageIndex: item['imageIndex'],
-    imageCount: item['imageCount'],
-    totalListings: item['totalListings'],
+    name: item[`name`],
+    description: item[`description`],
+    properties: item[`properties`],
+    tokenId: item[`tokenId`],
+    collectionAddress: item[`collectionAddress`],
+    chainId: item[`chainId`],
+    royalty: item[`royalty`],
+    creatorAddress: item[`creatorAddress`],
+    mintDate: item[`mintDate`],
+    stackable: item[`stackable`],
+    supply: item[`supply`],
+    maxSupply: item[`maxSupply`],
+    image: item[`image`],
+    imageHash: item[`imageHash`],
+    imageUrl: item[`imageUrl`],
+    fileType: item[`fileType`],
+    isVideo: item[`isVideo`],
+    otherImageVisibility: item[`otherImageVisibility`],
+    holders: item[`holders`],
+    listers: item[`listers`],
+    likes: item[`likes`],
+    views: item[`views`],
+    isListed: item[`isListed`],
+    mostRecentListing: item[`mostRecentListing`],
+    cheapestListingPrice: item[`cheapestListingPrice`],
+    cheapestListingCurrency: item[`cheapestListingCurrency`],
+    cheapestListingUSD: item[`cheapestListingUSD`],
+    nsfw: item[`nsfw`],
+    isVerified: item[`isVerified`],
+    hasUnlockableContent: item[`hasUnlockableContent`],
+    imageIndex: item[`imageIndex`],
+    imageCount: item[`imageCount`],
+    totalListings: item[`totalListings`],
   };
 };
 

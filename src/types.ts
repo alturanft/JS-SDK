@@ -11,7 +11,7 @@ export type TAlturaHolder = {
   address: string;
   balance: number;
   name: string;
-  profilePic?: string,
+  profilePic?: string;
   profilePicUrl?: string;
 };
 
@@ -26,7 +26,7 @@ export type TAlturaItemSlim = {
   collectionAddress: string;
   supply: number;
   maxSupply: number;
-  image: string,
+  image: string;
   imageUrl: string;
   imageIndex: number;
   imageCount: number;
@@ -39,7 +39,7 @@ export type TAlturaItem = {
     name: string;
     value: string;
     static: boolean;
-  },
+  };
   tokenId: number;
   collectionAddress: string;
   chainId: number;
@@ -79,7 +79,7 @@ export type TAlturaUserItem = {
     name: string;
     value: string;
     static: boolean;
-  },
+  };
   tokenId: number;
   collectionAddress: string;
   chainId: number;
@@ -127,7 +127,7 @@ export type TAlturaUserItemSlim = {
   imageUrl: string;
   imageIndex: number;
   imageCount: number;
-  userBalance: number
+  userBalance: number;
 };
 
 export type TAlturaCollection = {

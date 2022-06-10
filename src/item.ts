@@ -31,7 +31,7 @@ export class AlturaItem {
     const query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
-      includeListed: params && params.hasOwnProperty("includeListed") ? params.includeListed : true,
+      includeListed: params && params.hasOwnProperty('includeListed') ? params.includeListed : true,
     };
 
     const data = await this.apiCall.get<{ holders: object[]; count: number }>(
