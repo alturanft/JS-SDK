@@ -49,9 +49,7 @@ test('Altura Item history', async () => {
 test('Altura Item update property', async () => {
   const alturaItem = await altura.getItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID));
   const randVal = Math.floor(Math.random() * 10000)
-  const data = await alturaItem.updateProperty('prop1', randVal);
-
-  const updatedItem = data.item;
+  const updatedItem = await alturaItem.updateProperty('prop1', randVal.toString());
 
   expect(updatedItem.collectionAddress).toEqual(expect.any(String));
   expect(updatedItem.tokenId).toEqual(expect.any(Number));
@@ -65,11 +63,8 @@ test('Altura Item update property', async () => {
 
 test('Altura Item update primary image', async () => {
   const alturaItem = await altura.getItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID));
-  const data = await alturaItem.updatePrimaryImage(1);
+  const updatedItem = await alturaItem.updatePrimaryImage(1);
 
-  const updatedItem = data.item;
-
-  console.log(updatedItem);
   expect(updatedItem.collectionAddress).toEqual(expect.any(String));
   expect(updatedItem.tokenId).toEqual(expect.any(Number));
   expect(updatedItem.properties).toEqual(expect.any(Array));

@@ -85,7 +85,7 @@ export class AlturaItem {
         propertyValue,
       },
     );
-    return updatedItemInstanceFromJson(json.item, this.apiCall, 'collectionAddress')
+    return updatedItemInstanceFromJson(json.item, this.apiCall)
 
   }
 
@@ -105,7 +105,7 @@ export class AlturaItem {
       },
     );
 
-    return updatedItemInstanceFromJson(json.item, this.apiCall, 'itemCollection')
+    return updatedItemInstanceFromJson(json.item, this.apiCall)
 
   }
 }
