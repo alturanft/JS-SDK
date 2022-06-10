@@ -201,7 +201,6 @@ const itemFromJson = (item: object): TAlturaItem => {
     imageUrl: item['imageUrl'],
     fileType: item['fileType'],
     isVideo: item['isVideo'],
-    allImages: item['allImages'],
     otherImageVisibility: item['otherImageVisibility'],
     holders: item['holders'],
     listers: item['listers'],

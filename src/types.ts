@@ -54,12 +54,6 @@ export type TAlturaItem = {
   imageUrl: string;
   fileType: string;
   isVideo: boolean;
-  allImages: {
-    imageHash: string;
-    image: string;
-    fileType: string;
-    isVideo: boolean;
-  },
   otherImageVisibility: string;
   holders: number;
   listers: number;
@@ -100,12 +94,6 @@ export type TAlturaUserItem = {
   imageUrl: string;
   fileType: string;
   isVideo: boolean;
-  allImages: {
-    imageHash: string;
-    image: string;
-    fileType: string;
-    isVideo: boolean;
-  },
   otherImageVisibility: string;
   holders: number;
   listers: number;
@@ -145,19 +133,19 @@ export type TAlturaUserItemSlim = {
 export type TAlturaCollection = {
   address: string;
   name: string;
-  description: string;
-  genre: string;
-  image: string;
-  imageHash: string;
+  description?: string;
+  genre?: string;
+  image?: string;
+  imageHash?: string;
   ownerAddress: string;
   slug: string;
   uri: string;
-  website: string;
+  website?: string;
   holders: number;
-  volume_1d: number;
-  volume_1w: number;
-  volume_30d: number;
-  volume_all: number;
+  volume_1d?: number;
+  volume_1w?: number;
+  volume_30d?: number;
+  volume_all?: number;
   imageUrl?: string;
   chainId: number;
   mintDate: string;

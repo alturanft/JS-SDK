@@ -29,7 +29,7 @@ export class AlturaCollection {
     collection: AlturaCollection & TAlturaCollection;
   }> {
     const json = await this.apiCall.post<{ collection: object }>(
-      `collection/${this.address}/update`,
+      `collection/update`,
       { apiKey: this.apiCall.apiKey },
       params,
     );
