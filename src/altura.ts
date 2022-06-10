@@ -2,7 +2,7 @@ import { ApiCall } from './apiCall';
 import { AlturaUser } from './user';
 import { AlturaItem } from './item';
 import { AlturaCollection } from './collection';
-import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaItemState, TAlturaUser } from './types';
+import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser } from './types';
 import { collectionInstanceFromJson, itemInstanceFromJson, userInstanceFromJson } from './utils';
 
 export class Altura {
@@ -38,19 +38,17 @@ export class Altura {
    * Takes a item's collection address and tokenId and returns the instance of Item class
    * @param collectionAddress Collection Address of item
    * @param tokenId Token ID of item in collection
-   * @param options Set slim or stateOnly to get simplified result
+   * @param options Set slim to get simplified result
    */
   public async getItem(
     collectionAddress: string,
     tokenId: number,
     options?: {
       slim?: boolean;
-      stateOnly?: boolean;
     },
-  ): Promise<(AlturaItem & TAlturaItemState) | (AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem)> {
-    let query = { slim: false, stateOnly: false };
+  ): Promise<(AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem)> {
+    let query = { slim: false };
     if (options && options.slim) query = { ...query, slim: true };
-    if (options && options.stateOnly) query = { ...query, stateOnly: true };
 
     const json = await this.apiCall.get<{ item: any }>(`item/${collectionAddress}/${tokenId}`, query);
     return itemInstanceFromJson(json.item, this.apiCall, query);
@@ -105,7 +103,6 @@ export class Altura {
    * @param sortBy The field to sort the items by (any field in the item schema may be used) (default: "name")
    * @param sortDir Choose to sort in ascending(asc) or descending(desc) order (default: 'desc')
    * @param slim Returns a more condensed version of the items. Limits the item schema to: collectionAddress, tokenId, name, description, imageUrl and properties (default: false)
-   * @param stateOnly Returns only the information required to identify a known item's state: properties, and imageIndex (default: false)
    * @param searchQuery Object of search fields and values to get filterd items array
    */
   public async getItems(
@@ -115,11 +112,10 @@ export class Altura {
       sortBy?: string;
       sortDir?: 'desc' | 'asc';
       slim?: boolean;
-      stateOnly?: boolean;
     },
     searchQuery?: object,
   ): Promise<{
-    items: ((AlturaItem & TAlturaItemState) | (AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem))[];
+    items: ((AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem))[];
     count: number;
   }> {
     let query = {
@@ -128,7 +124,6 @@ export class Altura {
       sortBy: params && params.sortBy ? params.sortBy : 'mintDate',
       sortDir: params && params.sortDir ? params.sortDir : 'desc',
       slim: params && params.slim ? params.slim : false,
-      stateOnly: params && params.stateOnly ? params.stateOnly : false,
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 

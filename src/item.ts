@@ -1,5 +1,5 @@
 import { ApiCall } from './apiCall';
-import { IAlturaEvent, TAlturaHolder, TAlturaUpdatedItem } from './types';
+import { IAlturaEvent, TAlturaHolder, TAlturaItem } from './types';
 import { AlturaUser } from './user';
 import { eventFromJson, holderInstanceFromJson, updatedItemInstanceFromJson } from './utils';
 
@@ -31,7 +31,7 @@ export class AlturaItem {
     const query = {
       perPage: params && params.perPage ? params.perPage : 24,
       page: params && params.page ? params.page : 1,
-      includeListed: params && params.includeListed ? params.includeListed : true,
+      includeListed: params && params.hasOwnProperty("includeListed") ? params.includeListed : true,
     };
 
     const data = await this.apiCall.get<{ holders: object[]; count: number }>(
@@ -74,7 +74,7 @@ export class AlturaItem {
   public async updateProperty(
     propertyName: string,
     propertyValue: string,
-  ): Promise<{ item: AlturaItem & TAlturaUpdatedItem }> {
+  ): Promise<{ item: AlturaItem & TAlturaItem }> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_property',
       { apiKey: this.apiCall.apiKey },
@@ -95,7 +95,7 @@ export class AlturaItem {
    * @param imageIndex The index of the image you wish to change to (index starts at 0)
    * @returns
    */
-  public async updatePrimaryImage(imageIndex: number): Promise<{ item: AlturaItem & TAlturaUpdatedItem }> {
+  public async updatePrimaryImage(imageIndex: number): Promise<{ item: AlturaItem & TAlturaItem }> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_primary_image',
       { apiKey: this.apiCall.apiKey },

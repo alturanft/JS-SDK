@@ -1,16 +1,14 @@
 import { ApiCall } from './apiCall';
 import { AlturaItem } from './item';
-import { TAlturaUserItem, TAlturaUserItemSlim, TAlturaUserItemState } from './types';
+import { TAlturaUserItem, TAlturaUserItemSlim } from './types';
 import { userItemInstanceFromJson } from './utils';
 
 export class AlturaUser {
-  name: string;
   address: string;
   private apiCall: ApiCall;
 
-  constructor(_address: string, _name: string, _apiCall: ApiCall) {
+  constructor(_address: string, _apiCall: ApiCall) {
     this.address = _address;
-    this.name = _name;
     this.apiCall = _apiCall;
   }
 
@@ -24,7 +22,6 @@ export class AlturaUser {
    * (listed NFTs are still owned by the user, however on the blockchain they are held by a marketplace smart contract)
    * (default:: true)
    * @param slim Returns a more condensed version of the items. Limits the item fields to: collectionAddress, tokenId, name, description, imageUrl and properties (default: false)
-   * @param stateOnly Returns only the information required to identify a known item's state: properties, and imageIndex (default: false)
    * @param searchQuery Object of search fields and values to get filterd user's items array
    */
   public async getItems(
@@ -35,12 +32,10 @@ export class AlturaUser {
       sortDir?: 'desc' | 'asc';
       includeListed?: boolean;
       slim?: boolean;
-      stateOnly?: boolean;
     },
     searchQuery?: object,
   ): Promise<{
     items: (
-      | (AlturaItem & TAlturaUserItemState)
       | (AlturaItem & TAlturaUserItemSlim)
       | (AlturaItem & TAlturaUserItem)
     )[];
@@ -51,9 +46,8 @@ export class AlturaUser {
       page: params && params.page ? params.page : 1,
       sortBy: params && params.sortBy ? params.sortBy : 'mintDate',
       sortDir: params && params.sortDir ? params.sortDir : 'desc',
-      includeListed: params && params.includeListed ? params.includeListed : true,
+      includeListed: params && params.hasOwnProperty("includeListed") ? params.includeListed : true,
       slim: params && params.slim ? params.slim : false,
-      stateOnly: params && params.stateOnly ? params.stateOnly : false,
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
