@@ -74,7 +74,7 @@ export class AlturaItem {
   public async updateProperty(
     propertyName: string,
     propertyValue: string,
-  ): Promise<{ item: AlturaItem & TAlturaItem }> {
+  ): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_property',
       { apiKey: this.apiCall.apiKey },
@@ -85,9 +85,8 @@ export class AlturaItem {
         propertyValue,
       },
     );
-    return {
-      item: updatedItemInstanceFromJson(json.item, this.apiCall, 'collectionAddress'),
-    };
+    return updatedItemInstanceFromJson(json.item, this.apiCall, 'collectionAddress')
+
   }
 
   /**
@@ -95,7 +94,7 @@ export class AlturaItem {
    * @param imageIndex The index of the image you wish to change to (index starts at 0)
    * @returns
    */
-  public async updatePrimaryImage(imageIndex: number): Promise<{ item: AlturaItem & TAlturaItem }> {
+  public async updatePrimaryImage(imageIndex: number): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_primary_image',
       { apiKey: this.apiCall.apiKey },
@@ -106,8 +105,7 @@ export class AlturaItem {
       },
     );
 
-    return {
-      item: updatedItemInstanceFromJson(json.item, this.apiCall, 'itemCollection'),
-    };
+    return updatedItemInstanceFromJson(json.item, this.apiCall, 'itemCollection')
+
   }
 }

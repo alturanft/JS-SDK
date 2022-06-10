@@ -45,10 +45,6 @@ test('Alturaa get collections', async () => {
   expect(data.count).toBeGreaterThan(0);
   const collection = data.collections[0];
   expect(collection).toHaveProperty('address');
-  expect(collection).toHaveProperty('volume_1d');
-  expect(collection).toHaveProperty('volume_1w');
-  expect(collection).toHaveProperty('volume_30d');
-  expect(collection).toHaveProperty('volume_all');
 }, 60000);
 
 // Test altura.authenticateUser()

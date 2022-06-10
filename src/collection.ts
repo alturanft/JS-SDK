@@ -22,9 +22,7 @@ export class AlturaCollection {
     description?: string;
     website?: string;
     genre?: string;
-  }): Promise<{
-    collection: AlturaCollection & TAlturaCollection;
-  }> {
+  }): Promise<AlturaCollection & TAlturaCollection> {
     let body = { address: this.address };
     if (params) body = { ...body, ...params };
     const json = await this.apiCall.post<{ collection: object }>(
@@ -32,8 +30,7 @@ export class AlturaCollection {
       { apiKey: this.apiCall.apiKey },
       body,
     );
-    return {
-      collection: updatedCollectionInstanceFromJson(json.collection, this.apiCall),
-    };
+    return updatedCollectionInstanceFromJson(json.collection, this.apiCall)
+
   }
 }

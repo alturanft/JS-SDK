@@ -48,7 +48,8 @@ test('Altura Item history', async () => {
 
 test('Altura Item update property', async () => {
   const alturaItem = await altura.getItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID));
-  const data = await alturaItem.updateProperty('goal', '5');
+  const randVal = Math.floor(Math.random() * 10000)
+  const data = await alturaItem.updateProperty('prop1', randVal);
 
   const updatedItem = data.item;
 
@@ -58,7 +59,7 @@ test('Altura Item update property', async () => {
 
   const property = updatedItem.properties.find((x) => x.name === 'id');
   if (property) {
-    expect(property.value).toEqual(5);
+    expect(property.value).toEqual(randVal);
   }
 }, 60000);
 
