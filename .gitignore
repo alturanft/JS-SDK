@@ -3,3 +3,4 @@ lib
 coverage
 example
 .env
+.package-lock.json
