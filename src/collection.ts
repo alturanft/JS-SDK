@@ -30,7 +30,6 @@ export class AlturaCollection {
       { apiKey: this.apiCall.apiKey },
       body,
     );
-    return updatedCollectionInstanceFromJson(json.collection, this.apiCall)
-
+    return updatedCollectionInstanceFromJson(json.collection, this.apiCall);
   }
 }

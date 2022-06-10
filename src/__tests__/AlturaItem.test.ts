@@ -48,7 +48,7 @@ test('Altura Item history', async () => {
 
 test('Altura Item update property', async () => {
   const alturaItem = await altura.getItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID));
-  const randVal = Math.floor(Math.random() * 10000)
+  const randVal = Math.floor(Math.random() * 10000);
   const updatedItem = await alturaItem.updateProperty('prop1', randVal.toString());
 
   expect(updatedItem.collectionAddress).toEqual(expect.any(String));
