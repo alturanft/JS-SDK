@@ -35,12 +35,8 @@ export const holderInstanceFromJson = (user: object, apiCall: ApiCall): AlturaUs
   return userInstance as AlturaUser & TAlturaHolder;
 };
 
-export const updatedItemInstanceFromJson = (
-  item: object,
-  apiCall: ApiCall,
-  collectionAddressKey: string,
-): AlturaItem & TAlturaItem => {
-  const itemInstance: AlturaItem = new AlturaItem(item[`${collectionAddressKey}`], item[`tokenId`], apiCall);
+export const updatedItemInstanceFromJson = (item: object, apiCall: ApiCall): AlturaItem & TAlturaItem => {
+  const itemInstance: AlturaItem = new AlturaItem(item[`collectionAddress`], item[`tokenId`], apiCall);
   const updatedItem = itemFromJson(item);
 
   Object.entries(updatedItem).forEach(([key, value]) => {

@@ -71,10 +71,7 @@ export class AlturaItem {
    * @param propertyValue The new value you want to set the property to
    * @returns updated item
    */
-  public async updateProperty(
-    propertyName: string,
-    propertyValue: string,
-  ): Promise<AlturaItem & TAlturaItem> {
+  public async updateProperty(propertyName: string, propertyValue: string): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_property',
       { apiKey: this.apiCall.apiKey },
@@ -85,8 +82,7 @@ export class AlturaItem {
         propertyValue,
       },
     );
-    return updatedItemInstanceFromJson(json.item, this.apiCall, 'collectionAddress')
-
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
   }
 
   /**
@@ -105,7 +101,6 @@ export class AlturaItem {
       },
     );
 
-    return updatedItemInstanceFromJson(json.item, this.apiCall, 'itemCollection')
-
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
   }
 }

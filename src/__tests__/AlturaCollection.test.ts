@@ -26,7 +26,6 @@ test('Altura Collection Update', async () => {
     description: description,
   });
 
-  expect(data).toHaveProperty('collection');
-  expect(data.collection).toHaveProperty('address');
-  expect(data.collection.description).toBe(description);
+  expect(data).toHaveProperty('address');
+  expect(data.description).toBe(description);
 }, 60000);
