@@ -103,23 +103,19 @@ export class ApiCall {
 
       case 401:
       case 403:
-        errorMessage = `Unauthorized. Full message was '${JSON.stringify(result)}'`;
+        errorMessage = `Unauthorized. ${JSON.stringify(result)}'`;
         break;
 
       case 404:
-        errorMessage = `Not found. Full message was '${JSON.stringify(result)}'`;
+        errorMessage = `Not found. '${JSON.stringify(result)}'`;
         break;
 
       case 500:
-        errorMessage = `Internal server error. Altura has been alerted, but if the problem persists please contact us via Discord: https://discord.com/invite/cHW6SDMsEZ - full message was '${JSON.stringify(
-          result,
-        )}'`;
+        errorMessage = `Internal server error.'${JSON.stringify(result)}'`;
         break;
 
       case 503:
-        errorMessage = `Service unavailable. Please try again in a few minutes. If the problem persists please contact us via Discord: https://discord.com/invite/cHW6SDMsEZ - full message was '${JSON.stringify(
-          result,
-        )}'`;
+        errorMessage = `Service unavailable. '${JSON.stringify(result)}'`;
         break;
 
       default:

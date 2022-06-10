@@ -25,10 +25,12 @@ export class AlturaCollection {
   }): Promise<{
     collection: AlturaCollection & TAlturaCollection;
   }> {
+    let body = { address: this.address };
+    if (params) body = { ...body, ...params };
     const json = await this.apiCall.post<{ collection: object }>(
       `collection/update`,
       { apiKey: this.apiCall.apiKey },
-      params,
+      body,
     );
     return {
       collection: updatedCollectionInstanceFromJson(json.collection, this.apiCall),

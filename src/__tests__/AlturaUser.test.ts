@@ -14,7 +14,7 @@ test('Altura User', async () => {
   const alturaUser = await altura.getUser(WALLET_ADDRESS);
   expect(alturaUser).toHaveProperty('name');
   expect(alturaUser).toHaveProperty('address');
-});
+}, 60000);
 
 // Test alturaUser.getItems()
 test('Altura user items', async () => {
@@ -28,10 +28,8 @@ test('Altura user items', async () => {
   if (data.items.length > 0) {
     const item = data.items[0];
 
-    console.log(item);
-
     expect(item).toHaveProperty('collectionAddress');
     expect(item).toHaveProperty('tokenId');
     expect(item).toHaveProperty('userBalance');
   }
-});
+}, 60000);

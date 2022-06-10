@@ -39,9 +39,7 @@ export type TAlturaItem = {
     name: string;
     value: string;
     static: boolean;
-  };
-  tokenId: number;
-  collectionAddress: string;
+  }[];
   chainId: number;
   royalty: number;
   creatorAddress: string;
@@ -79,7 +77,7 @@ export type TAlturaUserItem = {
     name: string;
     value: string;
     static: boolean;
-  };
+  }[];
   tokenId: number;
   collectionAddress: string;
   chainId: number;

@@ -22,7 +22,7 @@ test('Altura get users', async () => {
   const user = data.users[0];
   expect(user).toHaveProperty('address');
   expect(user).toHaveProperty('name');
-});
+}, 60000);
 
 // Test altura.getItems();
 test('Altura get items', async () => {
@@ -34,7 +34,7 @@ test('Altura get items', async () => {
   const item = data.items[0];
   expect(item).toHaveProperty('collectionAddress');
   expect(item).toHaveProperty('tokenId');
-});
+}, 60000);
 
 // Test altura.getCollections();
 test('Alturaa get collections', async () => {
@@ -49,7 +49,7 @@ test('Alturaa get collections', async () => {
   expect(collection).toHaveProperty('volume_1w');
   expect(collection).toHaveProperty('volume_30d');
   expect(collection).toHaveProperty('volume_all');
-});
+}, 60000);
 
 // Test altura.authenticateUser()
 test('Altura authenticate user', async () => {
@@ -72,24 +72,16 @@ test('Altura authenticate user', async () => {
   expect(data.authenticated).toBe(true);
 
   spy.mockRestore();
-});
+}, 60000);
 
 // Test altura.transferItem()
-test(
-  'Altura transfer item',
-  async () => {
-    const data = await altura.transferItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID), 1, WALLET_ADDRESS);
-    expect(data).toHaveProperty('txHash');
-  },
-  60 * 1000,
-);
+test('Altura transfer item', async () => {
+  const data = await altura.transferItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID), 1, WALLET_ADDRESS);
+  expect(data).toHaveProperty('txHash');
+}, 60000);
 
 // Test altura.mintAdditionalSupply()
-test(
-  'Altura mint additional supply',
-  async () => {
-    const data = await altura.mintAdditionalSupply(COLLECTION_ADDRESS, parseInt(TOKEN_ID), 1, WALLET_ADDRESS);
-    expect(data).toHaveProperty('txHash');
-  },
-  60 * 1000,
-);
+test('Altura mint additional supply', async () => {
+  const data = await altura.mintAdditionalSupply(COLLECTION_ADDRESS, parseInt(TOKEN_ID), 1, WALLET_ADDRESS);
+  expect(data).toHaveProperty('txHash');
+}, 60000);
