@@ -8,7 +8,8 @@ export interface IConnector {
     get address(): string | null
 
     /**
-     * The provider for interacting with Web3 wallet features
+     * @deprecated The provider for interacting with Web3 wallet features. 
+     * Use of the provider directly is discouraged in favor of existing abstractions.
      */
     get provider(): ethers.providers.Web3Provider | null
 

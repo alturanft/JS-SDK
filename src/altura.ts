@@ -4,12 +4,16 @@ import { AlturaItem } from './item';
 import { AlturaCollection } from './collection';
 import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser } from './types';
 import { collectionInstanceFromJson, itemInstanceFromJson, userInstanceFromJson } from './utils';
+import { IConnector } from './connector';
 
 export class Altura {
   apiCall: ApiCall;
+  connector?: IConnector;
 
-  constructor(apiKey: string, logger?: (arg: string) => void) {
+  constructor(apiKey: string, logger?: (arg: string) => void, connector?: IConnector) {
     this.apiCall = new ApiCall({ apiKey }, logger || ((arg: string) => arg));
+    connector?.connect()?.then(() => 0)?.catch(() => 0);
+    this.connector = connector;
   }
 
   /**
@@ -26,11 +30,23 @@ export class Altura {
   }
 
   /**
-   * Takes a user's wallet address and returns the instance of User class
-   * @param address The user's wallet address
+   * Takes a user's connected wallet and Altura Guard code and returns true if the code is valid and false otherwise
+   * @param code The user's inputted Altura Guard code
    */
-  public async getUser(address: string): Promise<AlturaUser & TAlturaUser> {
-    const json = await this.apiCall.get<{ user: object }>(`user/${address}`);
+  public async authenticateWallet(code: string): Promise<{ authenticated: boolean }> {
+    const json = await this.apiCall.get<{ authenticated: boolean }>(`user/verify_auth_code/${this.connector?.address}/${code}`);
+
+    return {
+      authenticated: json.authenticated,
+    };
+  }
+
+  /**
+   * Takes a user's wallet address and returns the instance of User class
+   * @param address The user's wallet address; if null will fallback to the address of the connected wallet
+   */
+  public async getUser(address?: string): Promise<AlturaUser & TAlturaUser> {
+    const json = await this.apiCall.get<{ user: object }>(`user/${address || this.connector?.address}`);
     return userInstanceFromJson(json.user, this.apiCall);
   }
 
