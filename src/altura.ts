@@ -10,9 +10,12 @@ export class Altura {
   apiCall: ApiCall;
   connector?: IConnector;
 
-  constructor(apiKey: string, logger?: (arg: string) => void, connector?: IConnector) {
+  constructor(apiKey?: string, logger?: (arg: string) => void, connector?: IConnector) {
     this.apiCall = new ApiCall({ apiKey }, logger || ((arg: string) => arg));
-    connector?.connect()?.then(() => 0)?.catch(() => 0);
+    connector
+      ?.connect()
+      ?.then(() => 0)
+      ?.catch(() => 0);
     this.connector = connector;
   }
 
@@ -34,7 +37,9 @@ export class Altura {
    * @param code The user's inputted Altura Guard code
    */
   public async authenticateWallet(code: string): Promise<{ authenticated: boolean }> {
-    const json = await this.apiCall.get<{ authenticated: boolean }>(`user/verify_auth_code/${this.connector?.address}/${code}`);
+    const json = await this.apiCall.get<{ authenticated: boolean }>(
+      `user/verify_auth_code/${this.connector?.address}/${code}`,
+    );
 
     return {
       authenticated: json.authenticated,

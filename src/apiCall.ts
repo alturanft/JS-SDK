@@ -2,7 +2,7 @@ import 'isomorphic-unfetch';
 import * as QueryString from 'query-string';
 
 export interface IApiCallConfig {
-  apiKey: string;
+  apiKey?: string;
 }
 
 export class ApiCall {
@@ -20,7 +20,7 @@ export class ApiCall {
   private logger: (arg: string) => void;
 
   constructor(config: IApiCallConfig, logger?: (arg: string) => void) {
-    this.apiKey = config.apiKey;
+    this.apiKey = config.apiKey || '';
 
     this.logger = logger || ((arg: string) => arg);
   }
