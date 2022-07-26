@@ -90,7 +90,7 @@ export class AlturaItem {
    * @param properties The array of properties you are going to update
    */
   public async bulkUpdateProperty(
-    properties: { [propertyName: string]: string | boolean | number | undefined | null }[],
+    properties: { propertyName: string; propertyValue: any }[],
   ): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/update_property',
