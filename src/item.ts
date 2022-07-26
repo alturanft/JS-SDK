@@ -86,6 +86,24 @@ export class AlturaItem {
   }
 
   /**
+   * Takes an array of objects with two fields: propertyName & propertyValue(the updated value) to update item's properties
+   * @param properties The array of properties you are going to update
+   */
+  public async bulkUpdateProperty(
+    properties: { [propertyName: string]: string | boolean | number | undefined | null }[],
+  ): Promise<AlturaItem & TAlturaItem> {
+    const json = await this.apiCall.post<{ item: object }>(
+      'item/update_property',
+      { apiKey: this.apiCall.apiKey },
+      {
+        properties,
+      },
+    );
+
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
+  }
+
+  /**
    *
    * @param imageIndex The index of the image you wish to change to (index starts at 0)
    * @returns
@@ -98,6 +116,32 @@ export class AlturaItem {
         address: this.collectionAddress,
         tokenId: this.tokenId,
         imageIndex,
+      },
+    );
+
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
+  }
+
+  /**
+   * Append a new image/video to the item's otherImages array
+   * @param imageUrl the Url of the Image/Video to add
+   * @param imageIndex The index of that the image should be inserted into
+   * @param setAsPrimary Boolean to set the newly appened image as the items primary image
+   */
+  public async appendImage(
+    imageUrl: string,
+    imageIndex: number,
+    setAsPrimary?: boolean,
+  ): Promise<AlturaItem & TAlturaItem> {
+    const json = await this.apiCall.post<{ item: object }>(
+      'item/append_images',
+      { apiKey: this.apiCall.apiKey },
+      {
+        address: this.collectionAddress,
+        tokenId: this.tokenId,
+        imageUrl,
+        imageIndex,
+        setAsPrimary: setAsPrimary as boolean,
       },
     );
 
