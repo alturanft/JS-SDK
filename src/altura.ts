@@ -212,6 +212,44 @@ export class Altura {
   }
 
   /**
+   * Transfers a single ERC721 token from your developer wallet to another user
+   * @param collectionAddress The ERC721 collection address
+   * @param tokenId The ERC721 tokenId
+   * @param to The recipient's EVM-compatible address (0x...)
+   */
+   public async transferErc721(
+    collectionAddress: string,
+    tokenId: number,
+    to: string,
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'erc721/transfer',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenId, to },
+    );
+    return { txHash: data.txHash };
+  }
+  /**
+   * Transfers ERC20 tokens from your developer wallet to another user
+   * @param contractAddress The contract address
+   * @param chainID Network ID of the collection
+   * @param amount the amount of tokens to be sended
+   * @param to The recipient's EVM-compatible address (0x...)
+   */
+   public async transferErc20(
+    contractAddress: string,
+    chainID: number,
+    amount: number,
+    to: string,
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'erc20/transfer',
+      { apiKey: this.apiCall.apiKey },
+      { address: contractAddress, chainID, to, amount },
+    );
+    return { txHash: data.txHash };
+  }
+  /**
    * Transfers several items of a particular collection from your developer wallet to another user
    * @param collectionAddress The item's collection address
    * @param tokenIds An array of the token Ids you wish to transfer from the specified collection
