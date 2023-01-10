@@ -5,3 +5,4 @@ example
 .env
 package-lock.json
 test
+.vscode
