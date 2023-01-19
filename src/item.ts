@@ -64,7 +64,25 @@ export class AlturaItem {
       events: data.events.map((e) => eventFromJson(e)),
     };
   }
-
+  /**
+   * Updates the value of an item's property
+   * @param propertyName The name (key) of the property you want to change
+   * @param propertyValue The new value you want to set the property to
+   * @returns updated item
+   */
+   public async addProperty(propertyName: string, propertyValue: string): Promise<AlturaItem & TAlturaItem> {
+    const json = await this.apiCall.post<{ item: object }>(
+      'add/property',
+      { apiKey: this.apiCall.apiKey },
+      {
+        address: this.collectionAddress,
+        tokenId: this.tokenId,
+        propertyName,
+        propertyValue,
+      },
+    );
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
+  }
   /**
    * Updates the value of an item's property
    * @param propertyName The name (key) of the property you want to change
