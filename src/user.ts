@@ -55,4 +55,56 @@ export class AlturaUser {
       count: json.count,
     };
   }
+
+  /**
+   * check if the user is an owner of an specific item
+   * @param collectionAddress the item's collection address
+   * @param tokenId tokenId of the item
+   * @param chainId the collection network
+   */
+     public async checkOwnerShip(collectionAddress: string, chainId: number,tokenId: number): Promise<{ isOwner: boolean }> {
+      let query = {
+        chainId: chainId,
+        address: this.address,
+        collectionAddress: collectionAddress,
+        tokenId: tokenId,
+      }
+      const json = await this.apiCall.get<{ isOwner: boolean }>(`checkownership/`, query);
+  
+      return {
+        isOwner: json.isOwner,
+      };
+    }
+
+   /**
+   * get User balance
+   * @param chainId the network id by default is 56
+   */
+       public async getBalance( chainId?: number): Promise<{ balance: number }> {
+        let query = {
+          chainId: chainId ? chainId : 56,
+          address: this.address,
+        }
+        const json = await this.apiCall.get<{ balance: number }>(`native/balance/`, query);
+    
+        return {
+          balance: json.balance,
+        };
+      }
+   /**
+   * get User ERC20 balance
+   * @param chainId the network id by default is 56
+   */
+    public async getERC20Balance( tokenAddress: string, chainId?: number): Promise<{ balance: number }> {
+      let query = {
+        chainId: chainId ? chainId : 56,
+        address: this.address,
+        tokenAddress:tokenAddress,
+      }
+      const json = await this.apiCall.get<{ balance: number }>(`erc20/balance/`, query);
+  
+      return {
+        balance: json.balance,
+      };
+    }
 }
