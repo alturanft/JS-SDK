@@ -83,7 +83,7 @@ export class AlturaItem {
     );
     return updatedItemInstanceFromJson(json.item, this.apiCall);
   }
-    /**
+  /**
    * remove an property fromm an item
    * @param propertyName The name (key) of the property you want to change
    * @returns updated item
@@ -115,6 +115,25 @@ export class AlturaItem {
         tokenId: this.tokenId,
         propertyName,
         propertyValue,
+      },
+    );
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
+  }
+  /**
+   * Updates the item name or description
+   * @param itemName The name (key) of the property you want to change
+   * @param itemDesc The new value you want to set the property to
+   * @returns updated item
+   */
+  public async updateItemData(itemName?: string, itemDesc?: string): Promise<AlturaItem & TAlturaItem> {
+    const json = await this.apiCall.post<{ item: object }>(
+      'item/updateItem',
+      { apiKey: this.apiCall.apiKey },
+      {
+        address: this.collectionAddress,
+        tokenId: this.tokenId,
+        itemName: itemName ? itemName : "",
+        itemDesc: itemDesc ? itemDesc : "",
       },
     );
     return updatedItemInstanceFromJson(json.item, this.apiCall);
