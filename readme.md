@@ -46,9 +46,9 @@ To use the Altura SDK in your code, you need to import as follows.
 ```javascript
 const { Altura } = require("@altura/altura-js")
 
-const altura = new Altura(API_KEY); // your API Key
+const altura = new Altura(API_KEY); // API_KEY is optional
 ```
-> [Learn how to get your API key](https://docs.alturanft.com/altura-developer-api/rest-api)
+> API key is optional, which means you are able to user only read functions without putting an API key
 
 ## **Documentation**
 To learn more about the `altura-js` SDK function, please visit our official documentation via: 
