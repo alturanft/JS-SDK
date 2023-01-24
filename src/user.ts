@@ -62,17 +62,17 @@ export class AlturaUser {
    * @param tokenId tokenId of the item
    * @param chainId the collection network
    */
-     public async getUserItemBalance(collectionAddress: string, chainId: number,tokenId: number): Promise<{ isOwner: boolean }> {
+     public async getUserItemBalance(collectionAddress: string, chainId: number,tokenId: number): Promise<{ balance: number }> {
       let query = {
         chainId: chainId,
         address: this.address,
         collectionAddress: collectionAddress,
         tokenId: tokenId,
       }
-      const json = await this.apiCall.get<{ isOwner: boolean }>(`item/balance/`, query);
+      const json = await this.apiCall.get<{ balance: number }>(`item/balance/`, query);
   
       return {
-        isOwner: json.isOwner,
+        balance: json.balance,
       };
     }
 
