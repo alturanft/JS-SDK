@@ -70,7 +70,11 @@ export class AlturaItem {
    * @param propertyValue The new value you want to set the property to
    * @returns updated item
    */
-   public async addProperty(propertyName: string, propertyValue: string, isStatic?: boolean): Promise<AlturaItem & TAlturaItem> {
+  public async addProperty(
+    propertyName: string,
+    propertyValue: string,
+    isStatic?: boolean,
+  ): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
       'item/add/property',
       { apiKey: this.apiCall.apiKey },
@@ -79,7 +83,7 @@ export class AlturaItem {
         tokenId: this.tokenId,
         propertyName,
         propertyValue,
-        isStatic:isStatic ? isStatic : false,,
+        isStatic: isStatic ? isStatic : false,
       },
     );
     return updatedItemInstanceFromJson(json.item, this.apiCall);
@@ -89,18 +93,18 @@ export class AlturaItem {
    * @param propertyName The name (key) of the property you want to change
    * @returns updated item
    */
-     public async removeProperty(propertyName: string): Promise<AlturaItem & TAlturaItem> {
-      const json = await this.apiCall.post<{ item: object }>(
-        'item/delete/property',
-        { apiKey: this.apiCall.apiKey },
-        {
-          address: this.collectionAddress,
-          tokenId: this.tokenId,
-          propertyName,
-        },
-      );
-      return updatedItemInstanceFromJson(json.item, this.apiCall);
-    }
+  public async removeProperty(propertyName: string): Promise<AlturaItem & TAlturaItem> {
+    const json = await this.apiCall.post<{ item: object }>(
+      'item/delete/property',
+      { apiKey: this.apiCall.apiKey },
+      {
+        address: this.collectionAddress,
+        tokenId: this.tokenId,
+        propertyName,
+      },
+    );
+    return updatedItemInstanceFromJson(json.item, this.apiCall);
+  }
   /**
    * Updates the value of an item's property
    * @param propertyName The name (key) of the property you want to change
@@ -133,8 +137,8 @@ export class AlturaItem {
       {
         address: this.collectionAddress,
         tokenId: this.tokenId,
-        itemName: itemName ? itemName : "",
-        itemDesc: itemDesc ? itemDesc : "",
+        itemName: itemName ? itemName : '',
+        itemDesc: itemDesc ? itemDesc : '',
       },
     );
     return updatedItemInstanceFromJson(json.item, this.apiCall);
