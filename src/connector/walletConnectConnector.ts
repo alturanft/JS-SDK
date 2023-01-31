@@ -2,7 +2,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers } from 'ethers';
 import { IConnector } from './type';
 import { BigNumber } from 'ethers';
-export class TrustwalletConnector implements IConnector {
+export class WalletConnectConnector implements IConnector {
   private _provider: ethers.providers.Web3Provider | null = null;
   private _address: string | null = null;
 
