@@ -67,11 +67,11 @@ export class AlturaUser {
     chainId: number,
     tokenId: number,
   ): Promise<{ balance: number }> {
-    let query = {
-      chainId: chainId,
+    const query = {
+      chainId: '{chainId}',
       userAddress: this.address,
-      collectionAddress: collectionAddress,
-      tokenId: tokenId,
+      collectionAddress: '{collectionAddress}',
+      tokenId: '{tokenId}',
     };
     const json = await this.apiCall.get<{ balance: number }>(`item/balance/`, query);
 
@@ -85,7 +85,7 @@ export class AlturaUser {
    * @param chainId the network id by default is 56
    */
   public async getNativeBalance(chainId?: number): Promise<{ balance: number }> {
-    let query = {
+    const query = {
       chainId: chainId ? chainId : 56,
       userAddress: this.address,
     };
@@ -100,10 +100,10 @@ export class AlturaUser {
    * @param chainId the network id by default is 56
    */
   public async getERC20Balance(tokenAddress: string, chainId?: number): Promise<{ balance: number }> {
-    let query = {
+    const query = {
       chainId: chainId ? chainId : 56,
       userAddress: this.address,
-      tokenAddress: tokenAddress,
+      tokenAddress: '{tokenAddress}',
     };
     const json = await this.apiCall.get<{ balance: number }>(`erc20/balance/`, query);
 
