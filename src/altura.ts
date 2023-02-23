@@ -232,20 +232,20 @@ export class Altura {
   /**
    * Transfers ERC20 tokens from your developer wallet to another user
    * @param contractAddress The contract address
-   * @param chainID Network ID of the collection
+   * @param chainId Network ID of the collection
    * @param amount the amount of tokens to be sended
    * @param to The recipient's EVM-compatible address (0x...)
    */
    public async transferErc20(
     contractAddress: string,
-    chainID: number,
+    chainId: number,
     amount: number,
     to: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
       'erc20/transfer',
       { apiKey: this.apiCall.apiKey },
-      { address: contractAddress, chainID, to, amount },
+      { address: contractAddress, chainId, to, amount },
     );
     return { txHash: data.txHash };
   }

@@ -9,6 +9,7 @@ const API_KEY = process.env.API_KEY || '';
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS || '';
 const COLLECTION_ADDRESS = process.env.COLLECTION_ADDRESS || '';
 const TOKEN_ID = process.env.TOKEN_ID || '0';
+const CHAIN_ID = process.env.CHAIN_ID || '97';
 
 const altura = new Altura(API_KEY, (arg: string) => logger.debug(arg));
 
@@ -73,6 +74,12 @@ test('Altura authenticate user', async () => {
 // Test altura.transferItem()
 test('Altura transfer item', async () => {
   const data = await altura.transferItem(COLLECTION_ADDRESS, parseInt(TOKEN_ID), 1, WALLET_ADDRESS);
+  expect(data).toHaveProperty('txHash');
+}, 60000);
+
+// Test altura.transferErc20()
+test('Altura transfer ERC20', async () => {
+  const data = await altura.transferErc20(COLLECTION_ADDRESS, parseInt(CHAIN_ID), 1, WALLET_ADDRESS);
   expect(data).toHaveProperty('txHash');
 }, 60000);
 
