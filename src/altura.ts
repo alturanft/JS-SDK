@@ -238,14 +238,14 @@ export class Altura {
    */
    public async transferErc20(
     contractAddress: string,
-    chainId: number,
+    CHAIN_ID: number,
     amount: number,
     to: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
       'erc20/transfer',
       { apiKey: this.apiCall.apiKey },
-      { address: contractAddress, chainId, to, amount },
+      { address: contractAddress, chainId:CHAIN_ID, to, amount },
     );
     return { txHash: data.txHash };
   }
