@@ -210,7 +210,25 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
-
+  /**
+   * Burns a single NFT from your developer wallet 
+   * @param collectionAddress The item's collection address
+   * @param tokenId The item's tokenId
+   * @param amount The quantity of this particular item you wish to transfer.
+   * This operation will fail if you try to transfer more than your balance.
+   */
+  public async burnItem(
+    collectionAddress: string,
+    tokenId: number,
+    amount: number,
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/burn',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenId, amount },
+    );
+    return { txHash: data.txHash };
+  }
   /**
    * Transfers a single ERC721 token from your developer wallet to another user
    * @param collectionAddress The ERC721 collection address
@@ -229,6 +247,23 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
+    /**
+   * burns a single ERC721 token from your developer wallet
+   * @param collectionAddress The ERC721 collection address
+   * @param tokenId The ERC721 tokenId
+   */
+    public async burnErc721(
+      collectionAddress: string,
+      tokenId: number,
+    ): Promise<{ txHash: string }> {
+      const data = await this.apiCall.post<{ txHash: string }>(
+        'erc721/burn',
+        { apiKey: this.apiCall.apiKey },
+        { address: collectionAddress, tokenId },
+      );
+      return { txHash: data.txHash };
+    }
+
   /**
    * Transfers ERC20 tokens from your developer wallet to another user
    * @param contractAddress The contract address
@@ -270,7 +305,25 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
-
+  /**
+   * Burns several items of a particular collection from your developer wallet 
+   * @param collectionAddress The item's collection address
+   * @param tokenIds An array of the token Ids you wish to transfer from the specified collection
+   * @param amounts An array of the amount of each tokenId you wish to transfer
+   * This array must be the same length as the tokenIds array
+   */
+  public async burnItems(
+    collectionAddress: string,
+    tokenIds: number[],
+    amounts: number[],
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/burn',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenIds, amounts },
+    );
+    return { txHash: data.txHash };
+  }
   /**
    * Mints additional supply of an existent NFT
    *
