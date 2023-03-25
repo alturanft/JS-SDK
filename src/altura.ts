@@ -247,7 +247,7 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
-    /**
+  /** 
    * burns a single ERC721 token from your developer wallet
    * @param collectionAddress The ERC721 collection address
    * @param tokenId The ERC721 tokenId
