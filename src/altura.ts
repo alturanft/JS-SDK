@@ -210,18 +210,15 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
+
   /**
-   * Burns a single NFT from your developer wallet 
+   * Burns a single NFT from your developer wallet
    * @param collectionAddress The item's collection address
    * @param tokenId The item's tokenId
    * @param amount The quantity of this particular item you wish to transfer.
    * This operation will fail if you try to transfer more than your balance.
    */
-  public async burnItem(
-    collectionAddress: string,
-    tokenId: number,
-    amount: number,
-  ): Promise<{ txHash: string }> {
+  public async burnItem(collectionAddress: string, tokenId: number, amount: number): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
       'item/burn',
       { apiKey: this.apiCall.apiKey },
@@ -229,17 +226,34 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
+
+  /**
+   * Burns several items of a particular collection from your developer wallet
+   * @param collectionAddress The item's collection address
+   * @param tokenIds An array of the token Ids you wish to transfer from the specified collection
+   * @param amounts An array of the amount of each tokenId you wish to transfer
+   * This array must be the same length as the tokenIds array
+   */
+  public async burnItems(
+    collectionAddress: string,
+    tokenIds: number[],
+    amounts: number[],
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/burn',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenIds, amounts },
+    );
+    return { txHash: data.txHash };
+  }
+
   /**
    * Transfers a single ERC721 token from your developer wallet to another user
    * @param collectionAddress The ERC721 collection address
    * @param tokenId The ERC721 tokenId
    * @param to The recipient's EVM-compatible address (0x...)
    */
-   public async transferErc721(
-    collectionAddress: string,
-    tokenId: number,
-    to: string,
-  ): Promise<{ txHash: string }> {
+  public async transferErc721(collectionAddress: string, tokenId: number, to: string): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
       'erc721/transfer',
       { apiKey: this.apiCall.apiKey },
@@ -247,22 +261,20 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
-  /** 
+
+  /**
    * burns a single ERC721 token from your developer wallet
    * @param collectionAddress The ERC721 collection address
    * @param tokenId The ERC721 tokenId
    */
-    public async burnErc721(
-      collectionAddress: string,
-      tokenId: number,
-    ): Promise<{ txHash: string }> {
-      const data = await this.apiCall.post<{ txHash: string }>(
-        'erc721/burn',
-        { apiKey: this.apiCall.apiKey },
-        { address: collectionAddress, tokenId },
-      );
-      return { txHash: data.txHash };
-    }
+  public async burnErc721(collectionAddress: string, tokenId: number): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'erc721/burn',
+      { apiKey: this.apiCall.apiKey },
+      { address: collectionAddress, tokenId },
+    );
+    return { txHash: data.txHash };
+  }
 
   /**
    * Transfers ERC20 tokens from your developer wallet to another user
@@ -271,7 +283,7 @@ export class Altura {
    * @param amount the amount of tokens to be sended
    * @param to The recipient's EVM-compatible address (0x...)
    */
-   public async transferErc20(
+  public async transferErc20(
     contractAddress: string,
     CHAIN_ID: number,
     amount: number,
@@ -280,10 +292,11 @@ export class Altura {
     const data = await this.apiCall.post<{ txHash: string }>(
       'erc20/transfer',
       { apiKey: this.apiCall.apiKey },
-      { address: contractAddress, chainId:CHAIN_ID, to, amount },
+      { address: contractAddress, chainId: CHAIN_ID, to, amount },
     );
     return { txHash: data.txHash };
   }
+
   /**
    * Transfers several items of a particular collection from your developer wallet to another user
    * @param collectionAddress The item's collection address
@@ -305,25 +318,7 @@ export class Altura {
     );
     return { txHash: data.txHash };
   }
-  /**
-   * Burns several items of a particular collection from your developer wallet 
-   * @param collectionAddress The item's collection address
-   * @param tokenIds An array of the token Ids you wish to transfer from the specified collection
-   * @param amounts An array of the amount of each tokenId you wish to transfer
-   * This array must be the same length as the tokenIds array
-   */
-  public async burnItems(
-    collectionAddress: string,
-    tokenIds: number[],
-    amounts: number[],
-  ): Promise<{ txHash: string }> {
-    const data = await this.apiCall.post<{ txHash: string }>(
-      'item/burn',
-      { apiKey: this.apiCall.apiKey },
-      { address: collectionAddress, tokenIds, amounts },
-    );
-    return { txHash: data.txHash };
-  }
+
   /**
    * Mints additional supply of an existent NFT
    *
@@ -345,6 +340,33 @@ export class Altura {
       'item/mint',
       { apiKey: this.apiCall.apiKey },
       { address, tokenId, amount, to },
+    );
+
+    return {
+      txHash: data.txHash,
+    };
+  }
+
+  /**
+   * Consume (burn) a consumable item directly from its owner wallet
+   *
+   * Takes an item's collection address, tokenId, amount to consume, address to consume from (from) and your API key and consume a given amount of the specified NFT from the specified address.
+   * Only works if the item was created as consumable
+   * @param addresss The item's collection address
+   * @param tokenId The item's tokenId
+   * @param amount The amount of item to consume
+   * @param from The address you want to consume an item from
+   */
+  public async consumeItem(
+    address: string,
+    tokenId: number,
+    amount: number,
+    from: string,
+  ): Promise<{ txHash: string }> {
+    const data = await this.apiCall.post<{ txHash: string }>(
+      'item/consume',
+      { apiKey: this.apiCall.apiKey },
+      { address, tokenId, amount, from },
     );
 
     return {
