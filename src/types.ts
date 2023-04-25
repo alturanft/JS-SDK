@@ -1,3 +1,7 @@
+export type TAlturaGuard = {
+  token: string;
+  address: string;
+};
 export type TAlturaUser = {
   address: string;
   name: string;

@@ -10,8 +10,21 @@ import {
   TAlturaUser,
   TAlturaUserItem,
   TAlturaUserItemSlim,
+  TAlturaGuard
 } from '../types';
 import { AlturaUser } from '../user';
+import { AlturaGuard } from '../alturaGuard';
+
+export const alturaGuardInstanceFromJson = (data: object, apiCall: ApiCall): AlturaGuard & TAlturaGuard=> {
+  const alturaGuardInstance: AlturaGuard = new AlturaGuard(data[`token`],data[`address`], apiCall);
+  const alturaGuard: TAlturaGuard = userFromJson(data);
+
+  Object.entries(alturaGuard).forEach(([key, value]) => {
+    alturaGuard[`${key}`] = value;
+  });
+
+  return alturaGuardInstance as AlturaGuard & TAlturaGuard;
+};
 
 export const userInstanceFromJson = (user: object, apiCall: ApiCall): AlturaUser & TAlturaUser => {
   const userInstance: AlturaUser = new AlturaUser(user[`address`], apiCall);
