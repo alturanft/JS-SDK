@@ -45,6 +45,20 @@ export class Altura {
       authenticated: json.authenticated,
     };
   }
+  /**
+   * Takes a user's connected wallet and Altura Guard2 code and returns token and address of user
+   * @param code The user's inputted Altura Guard2 code
+   */
+  public async alturaGuard(code: string): Promise<{ token: string, address:string }> {
+    const result = await this.apiCall.post<{ data: { token: string; address: string } }>(
+      'alturaguard/addRequest',
+      { apiKey: this.apiCall.apiKey },
+      { code },
+    );
+    return {
+      token: result.data.token, address: result.data.address,
+    };
+  }
 
   /**
    * Takes a user's wallet address and returns the instance of User class
