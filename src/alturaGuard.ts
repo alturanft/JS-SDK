@@ -1,6 +1,6 @@
 import { ApiCall } from './apiCall';
 import { utf8ToHex } from "web3-utils";
-
+import { ethers } from "ethers";
 export class AlturaGuard {
     private token: string;
     private address: string;
@@ -64,10 +64,10 @@ public async signMessage(message: string): Promise<any> {
     if (result != "Rejected") {
       return result;
     } else {
-      throw new Error("User Rejected Request")
+      return {error:"User Rejected Request"};
     }
   } catch (e: any) {
-    throw new Error("Request Expired")
+    return {error:"Request Expired",message:e};
   }
 }
   /**
@@ -99,11 +99,59 @@ public async signMessage(message: string): Promise<any> {
       if (result != "Rejected") {
         return result;
       } else {
-        throw new Error("User Rejected Request")
+        return {error:"User Rejected Request"};
       }
     } catch (e: any) {
-      throw new Error("Request Expired")
+      return {error:"Request Expired",message:e};
     }
   }
-
+  /**
+ * Sends a transaction to approve a token contract for the connected user's address.
+ * @param contractAddress The address of the token contract.
+ * @param amount The amount of tokens to approve, in the token's smallest denomination (e.g. 0.1 BUSD = 100000000000000000).
+ * @param chainId The ID of the blockchain network to use (e.g. 97 for Binance Smart Chain Testnet).
+ * @returns A promise that resolves with the response from the API, or an object with an error property if there was an error.
+ */
+  public async sendContractTransaction(contractAddress:string, amount: string,chainId: number): Promise<any> {
+      const abi = [
+        {
+          inputs: [
+            { internalType: "address", name: "spender", type: "address" },
+            { internalType: "uint256", name: "amount", type: "uint256" },
+          ],
+          name: "approve",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ];
+      const contract = new ethers.Contract(contractAddress, abi);
+      try {
+      const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`,{
+        token: this.token,
+        reqParameters: [
+          "transaction",
+          {
+            from: this.address,
+            to: contractAddress,
+            data: contract.interface.encodeFunctionData("approve", [
+              this.address,
+              amount,
+            ]),
+            value: "0x0",
+          },
+          chainId,
+        ],
+      });
+      const result = await this.pollForResponse(request.data.requestId, this.token);
+        if (result !== "Rejected") {
+          return result;
+        } else {
+          return {error:"User Rejected Request"};
+        }
+      } catch (e: any) {
+        return {error:"Request Expired",message:e};
+      }
+  }
+  
 }
