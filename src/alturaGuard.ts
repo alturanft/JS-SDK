@@ -26,12 +26,12 @@ export class AlturaGuard {
   private async pollForResponse(requestId: string, token: string): Promise<any> {
     let responseStatus = 204;
     let result: any = null;
+    const body ={
+      token,
+      requestId,
+    };
     while (responseStatus === 204) {
-      result = await this.apiCall.post<{ data: object, status:number }>(`alturaguard/getResponse`,
-      {
-        token,
-        requestId,
-      }
+      result = await this.apiCall.post<{ data: object, status:number }>(`alturaguard/getResponse`,  {},body
       );
 
       responseStatus = result.status;
@@ -54,11 +54,11 @@ public async signMessage(message: string): Promise<any> {
   const messageHex = utf8ToHex(message);
 
   try {
-    const query = {
+    const body = {
       token: this.token,
       reqParameters: ["signature", messageHex],
     };
-    const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`, query);
+    const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`,  {}, body);
     const result = await this.pollForResponse(request.data.requestId, this.token);
 
     if (result != "Rejected") {
@@ -81,7 +81,7 @@ public async signMessage(message: string): Promise<any> {
   public async sendNativeToken(amount: string, chainID: number, fromAddress: string, toAddress: string): Promise<any> {
     const amountToSend = BigInt(amount);
     try {
-      const query =         {
+      const body =         {
         token: this.token,
         reqParameters: [
           "transaction",
@@ -94,7 +94,7 @@ public async signMessage(message: string): Promise<any> {
           chainID,
         ],
       };
-      const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`, query);
+      const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`,   {},body);
       const result = await this.pollForResponse(request.data.requestId, this.token);
       if (result != "Rejected") {
         return result;
@@ -126,8 +126,7 @@ public async signMessage(message: string): Promise<any> {
         },
       ];
       const contract = new ethers.Contract(contractAddress, abi);
-      try {
-      const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`,{
+      const body = {
         token: this.token,
         reqParameters: [
           "transaction",
@@ -142,7 +141,9 @@ public async signMessage(message: string): Promise<any> {
           },
           chainId,
         ],
-      });
+      };
+      try {
+      const request = await this.apiCall.post<{ data: { requestId: string } }>(`alturaguard/request`,  {},body);
       const result = await this.pollForResponse(request.data.requestId, this.token);
         if (result !== "Rejected") {
           return result;
