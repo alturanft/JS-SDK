@@ -3,8 +3,13 @@ import { AlturaUser } from './user';
 import { AlturaItem } from './item';
 import { AlturaGuard } from './alturaGuard';
 import { AlturaCollection } from './collection';
-import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser,TAlturaGuard } from './types';
-import { collectionInstanceFromJson, itemInstanceFromJson, userInstanceFromJson,alturaGuardInstanceFromJson } from './utils';
+import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser, TAlturaGuard } from './types';
+import {
+  collectionInstanceFromJson,
+  itemInstanceFromJson,
+  userInstanceFromJson,
+  alturaGuardInstanceFromJson,
+} from './utils';
 import { IConnector } from './connector';
 
 export class Altura {
@@ -50,15 +55,13 @@ export class Altura {
    * Takes a user's connected wallet and Altura Guard2 code and returns token and address of user
    * @param code The user's inputted Altura Guard2 code
    */
-  public async alturaGuard(code: string): Promise< any> {
-      const result = await this.apiCall.post<{ data: object }>(
-        'alturaguard/addRequest',
-        { apiKey: this.apiCall.apiKey },
-        { code },
-      );
-      console.log(result);
-      return alturaGuardInstanceFromJson(result, this.apiCall);
-
+  public async alturaGuard(code: string): Promise<any> {
+    const result = await this.apiCall.post<{ data: object }>(
+      'alturaguard/addRequest',
+      { apiKey: this.apiCall.apiKey },
+      { code },
+    );
+    return alturaGuardInstanceFromJson(result, this.apiCall);
   }
 
   /**

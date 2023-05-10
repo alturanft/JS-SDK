@@ -40,7 +40,6 @@ export class ApiCall {
     const response = await this._fetch(url);
     return response.json();
   }
-
   /**
    * POST JSON data to API.
    * @param apiPath Path to URL endpoint under API
@@ -63,7 +62,6 @@ export class ApiCall {
     });
     return response.json();
   }
-
   /**
    * Get from an API Endpoint
    * @param apiPah Path to URL endpoint under API
