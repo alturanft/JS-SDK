@@ -136,17 +136,15 @@ export class AlturaGuard {
   /**
    * Sends a transaction to approve a token contract for the connected user's address.
    * @param contractAddress The address of the token contract.
-   * @param amount The amount of tokens to approve, in the token's smallest denomination (e.g. 0.1 BUSD = 100000000000000000).
    * @param chainId The ID of the blockchain network to use (e.g. 97 for Binance Smart Chain Testnet).
+   * @param data contract Data
    * @returns A promise that resolves with the response from the API, or an object with an error property if there was an error.
    */
   public async sendContractTransaction(
     contractAddress: string,
-    amount: string,
     chainId: number,
-    abi: any[],
+    data:string
   ): Promise<any> {
-    const contract = new ethers.Contract(contractAddress, abi);
     const body = {
       token: this.token,
       reqParameters: [
@@ -154,7 +152,7 @@ export class AlturaGuard {
         {
           from: this.address,
           to: contractAddress,
-          data: contract.interface.encodeFunctionData('approve', [this.address, amount]),
+          data: data,
           value: '0x0',
         },
         chainId,
