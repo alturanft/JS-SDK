@@ -1,6 +1,6 @@
 {
   "name": "@altura/altura-js",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Javascript SDK for AlturaNFT",
   "license": "MIT",
   "author": "Altura Developers",
@@ -53,8 +53,10 @@
   },
   "dependencies": {
     "@walletconnect/web3-provider": "^1.7.8",
-    "ethers": "^5.6.8",
+    "axios": "^1.4.0",
+    "ethers": "^5.7.2",
     "isomorphic-unfetch": "^3.1.0",
-    "query-string": "^7.1.1"
+    "query-string": "^7.1.1",
+    "web3-utils": "^1.9.0"
   }
 }

@@ -26,7 +26,7 @@ export class AlturaCollection {
     let body = { address: this.address };
     if (params) body = { ...body, ...params };
     const json = await this.apiCall.post<{ collection: object }>(
-      `collection/update`,
+      `v2/collection/update`,
       { apiKey: this.apiCall.apiKey },
       body,
     );

@@ -1,9 +1,15 @@
 import { ApiCall } from './apiCall';
 import { AlturaUser } from './user';
 import { AlturaItem } from './item';
+import { AlturaGuard } from './alturaGuard';
 import { AlturaCollection } from './collection';
-import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser } from './types';
-import { collectionInstanceFromJson, itemInstanceFromJson, userInstanceFromJson } from './utils';
+import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser, TAlturaGuard } from './types';
+import {
+  collectionInstanceFromJson,
+  itemInstanceFromJson,
+  userInstanceFromJson,
+  alturaGuardInstanceFromJson,
+} from './utils';
 import { IConnector } from './connector';
 
 export class Altura {
@@ -25,7 +31,7 @@ export class Altura {
    * @param code The user's inputted Altura Guard code
    */
   public async authenticateUser(address: string, code: string): Promise<{ authenticated: boolean }> {
-    const json = await this.apiCall.get<{ authenticated: boolean }>(`user/verify_auth_code/${address}/${code}`);
+    const json = await this.apiCall.get<{ authenticated: boolean }>(`v2/user/verify_auth_code/${address}/${code}`);
 
     return {
       authenticated: json.authenticated,
@@ -38,12 +44,24 @@ export class Altura {
    */
   public async authenticateWallet(code: string): Promise<{ authenticated: boolean }> {
     const json = await this.apiCall.get<{ authenticated: boolean }>(
-      `user/verify_auth_code/${this.connector?.address}/${code}`,
+      `v2/user/verify_auth_code/${this.connector?.address}/${code}`,
     );
 
     return {
       authenticated: json.authenticated,
     };
+  }
+  /**
+   * Takes a user's connected wallet and Altura Guard2 code and returns token and address of user
+   * @param code The user's inputted Altura Guard2 code
+   */
+  public async alturaGuard(code: string): Promise<any> {
+    const result = await this.apiCall.post<{ data: object }>(
+      'alturaguard/addRequest',
+      { apiKey: this.apiCall.apiKey },
+      { code },
+    );
+    return alturaGuardInstanceFromJson(result, this.apiCall);
   }
 
   /**
@@ -51,7 +69,7 @@ export class Altura {
    * @param address The user's wallet address; if null will fallback to the address of the connected wallet
    */
   public async getUser(address?: string): Promise<AlturaUser & TAlturaUser> {
-    const json = await this.apiCall.get<{ user: object }>(`user/${address || this.connector?.address}`);
+    const json = await this.apiCall.get<{ user: object }>(`v2/user/${address || this.connector?.address}`);
     return userInstanceFromJson(json.user, this.apiCall);
   }
 
@@ -71,7 +89,7 @@ export class Altura {
     let query = { slim: false };
     if (options && options.slim) query = { ...query, slim: true };
 
-    const json = await this.apiCall.get<{ item: any }>(`item/${collectionAddress}/${tokenId}`, query);
+    const json = await this.apiCall.get<{ item: any }>(`v2/item/${collectionAddress}/${tokenId}`, query);
     return itemInstanceFromJson(json.item, this.apiCall, query);
   }
 
@@ -80,7 +98,7 @@ export class Altura {
    * @param address Address of collection
    */
   public async getCollection(address: string): Promise<AlturaCollection & TAlturaCollection> {
-    const json = await this.apiCall.get<{ collection: TAlturaCollection }>(`collection/${address}`);
+    const json = await this.apiCall.get<{ collection: TAlturaCollection }>(`v2/collection/${address}`);
     return collectionInstanceFromJson(json.collection, this.apiCall);
   }
 
@@ -109,7 +127,7 @@ export class Altura {
       sortDir: params && params.sortDir ? params.sortDir : 'desc',
     };
     if (searchQuery) query = { ...query, ...searchQuery };
-    const json = await this.apiCall.get<{ users: object[]; count: number }>('user', query);
+    const json = await this.apiCall.get<{ users: object[]; count: number }>('v2/user', query);
 
     return {
       users: json.users.map((j) => userInstanceFromJson(j, this.apiCall)),
@@ -148,7 +166,7 @@ export class Altura {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ items: any[]; count: number }>('item', query);
+    const json = await this.apiCall.get<{ items: any[]; count: number }>('v2/item', query);
 
     return {
       items: json.items.map((item) => itemInstanceFromJson(item, this.apiCall, query)),
@@ -181,7 +199,7 @@ export class Altura {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ collections: TAlturaCollection[]; count: number }>('collection', query);
+    const json = await this.apiCall.get<{ collections: TAlturaCollection[]; count: number }>('v2/collection', query);
 
     return {
       collections: json.collections.map((c) => collectionInstanceFromJson(c, this.apiCall)),
@@ -204,7 +222,7 @@ export class Altura {
     to: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'item/transfer',
+      'v2/item/transfer',
       { apiKey: this.apiCall.apiKey },
       { address: collectionAddress, tokenId, amount, to },
     );
@@ -220,7 +238,7 @@ export class Altura {
    */
   public async burnItem(collectionAddress: string, tokenId: number, amount: number): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'item/burn',
+      'v2/item/burn',
       { apiKey: this.apiCall.apiKey },
       { address: collectionAddress, tokenId, amount },
     );
@@ -240,7 +258,7 @@ export class Altura {
     amounts: number[],
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'item/burn',
+      'v2/item/burn',
       { apiKey: this.apiCall.apiKey },
       { address: collectionAddress, tokenIds, amounts },
     );
@@ -255,7 +273,7 @@ export class Altura {
    */
   public async transferErc721(collectionAddress: string, tokenId: number, to: string): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'erc721/transfer',
+      'v2/erc721/transfer',
       { apiKey: this.apiCall.apiKey },
       { address: collectionAddress, tokenId, to },
     );
@@ -269,7 +287,7 @@ export class Altura {
    */
   public async burnErc721(collectionAddress: string, tokenId: number): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'erc721/burn',
+      'v2/erc721/burn',
       { apiKey: this.apiCall.apiKey },
       { address: collectionAddress, tokenId },
     );
@@ -290,7 +308,7 @@ export class Altura {
     to: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'erc20/transfer',
+      'v2/erc20/transfer',
       { apiKey: this.apiCall.apiKey },
       { address: contractAddress, chainId: CHAIN_ID, to, amount },
     );
@@ -312,7 +330,7 @@ export class Altura {
     to: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'item/transfer',
+      'v2/item/transfer',
       { apiKey: this.apiCall.apiKey },
       { address: collectionAddress, tokenIds, amounts, to },
     );
@@ -337,7 +355,7 @@ export class Altura {
     to: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'item/mint',
+      'v2/item/mint',
       { apiKey: this.apiCall.apiKey },
       { address, tokenId, amount, to },
     );
@@ -364,7 +382,7 @@ export class Altura {
     from: string,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
-      'item/consume',
+      'v2/item/consume',
       { apiKey: this.apiCall.apiKey },
       { address, tokenId, amount, from },
     );

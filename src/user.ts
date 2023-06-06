@@ -48,7 +48,7 @@ export class AlturaUser {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ items: object[]; count: number }>(`user/items/${this.address}`, query);
+    const json = await this.apiCall.get<{ items: object[]; count: number }>(`v2/user/items/${this.address}`, query);
 
     return {
       items: json.items.map((item) => userItemInstanceFromJson(item, this.apiCall, query)),
@@ -73,7 +73,7 @@ export class AlturaUser {
       collectionAddress: '{collectionAddress}',
       tokenId: '{tokenId}',
     };
-    const json = await this.apiCall.get<{ balance: number }>(`item/balance/`, query);
+    const json = await this.apiCall.get<{ balance: number }>(`v2/item/balance/`, query);
 
     return {
       balance: json.balance,
@@ -89,7 +89,7 @@ export class AlturaUser {
       chainId: chainId ? chainId : 56,
       userAddress: this.address,
     };
-    const json = await this.apiCall.get<{ balance: number }>(`native/balance/`, query);
+    const json = await this.apiCall.get<{ balance: number }>(`v2/native/balance/`, query);
 
     return {
       balance: json.balance,
@@ -105,7 +105,7 @@ export class AlturaUser {
       userAddress: this.address,
       tokenAddress: '{tokenAddress}',
     };
-    const json = await this.apiCall.get<{ balance: number }>(`erc20/balance/`, query);
+    const json = await this.apiCall.get<{ balance: number }>(`v2/erc20/balance/`, query);
 
     return {
       balance: json.balance,
