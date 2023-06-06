@@ -9,7 +9,7 @@ export class ApiCall {
   /**
    * Base URL for the API
    */
-  private apiBaseUrl = 'https://cloud.alturanft.com/api/';
+  private apiBaseUrl = 'https://app.alturanft.com/api/';
   /**
    * ApiKey generated from Developer portal
    */

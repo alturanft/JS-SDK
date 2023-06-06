@@ -35,7 +35,7 @@ export class AlturaItem {
     };
 
     const data = await this.apiCall.get<{ holders: object[]; count: number }>(
-      `item/holders/${this.collectionAddress}/${this.tokenId}`,
+      `v2/item/holders/${this.collectionAddress}/${this.tokenId}`,
       query,
     );
 
@@ -57,7 +57,7 @@ export class AlturaItem {
     };
 
     const data = await this.apiCall.get<{ events: object[] }>(
-      `item/events/${this.collectionAddress}/${this.tokenId}`,
+      `v2/item/events/${this.collectionAddress}/${this.tokenId}`,
       query,
     );
     return {
@@ -76,7 +76,7 @@ export class AlturaItem {
     isStatic?: boolean,
   ): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/add/property',
+      'v2/item/add/property',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
@@ -95,7 +95,7 @@ export class AlturaItem {
    */
   public async removeProperty(propertyName: string): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/delete/property',
+      'v2/item/delete/property',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
@@ -113,7 +113,7 @@ export class AlturaItem {
    */
   public async updateProperty(propertyName: string, propertyValue: string): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/update_property',
+      'v2/item/update_property',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
@@ -132,7 +132,7 @@ export class AlturaItem {
    */
   public async updateItemData(itemName?: string, itemDesc?: string): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/updateItem',
+      'v2/item/updateItem',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
@@ -152,7 +152,7 @@ export class AlturaItem {
     properties: { propertyName: string; propertyValue: string }[],
   ): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/update_property',
+      'v2/item/update_property',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
@@ -171,7 +171,7 @@ export class AlturaItem {
    */
   public async updatePrimaryImage(imageIndex: number): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/update_primary_image',
+      'v2/item/update_primary_image',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
@@ -195,7 +195,7 @@ export class AlturaItem {
     setAsPrimary?: boolean,
   ): Promise<AlturaItem & TAlturaItem> {
     const json = await this.apiCall.post<{ item: object }>(
-      'item/append_images',
+      'v2/item/append_images',
       { apiKey: this.apiCall.apiKey },
       {
         address: this.collectionAddress,
