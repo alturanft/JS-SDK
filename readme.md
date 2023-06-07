@@ -53,4 +53,4 @@ const altura = new Altura(API_KEY); // API_KEY is optional
 ## **Documentation**
 To learn more about the `altura-js` SDK function, please visit our official documentation via: 
 
-https://docs.alturanft.com/altura-developer-api/rest-api
+https://docs.alturanft.com/

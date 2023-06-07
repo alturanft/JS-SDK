@@ -33,7 +33,7 @@ export class AlturaGuard {
     };
     let responseStatus = 204;
     while (responseStatus === 204) {
-      const response = await axios.post('https://cloud.alturanft.com/api/alturaguard/getResponse', body);
+      const response = await axios.post('https://app.alturanft.com/api/alturaguard/getResponse', body);
       responseStatus = response.status;
       if (responseStatus !== 204) {
         return response?.data;
