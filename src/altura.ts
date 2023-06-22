@@ -346,6 +346,7 @@ export class Altura {
    * @param tokenId The item's tokenId
    * @param amount The amount of additional supply you want to mint
    * @param to The address you want to mint the additional supply to.
+   * @param chainId Network ID of the collection (Optional)
    * You do not need to mint the additional supply to your own wallet, instead, you can mint them to someone else's wallt right away
    */
   public async mintAdditionalSupply(
@@ -353,11 +354,12 @@ export class Altura {
     tokenId: number,
     amount: number,
     to: string,
+    chainId?: number,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
       'v2/item/mint',
       { apiKey: this.apiCall.apiKey },
-      { address, tokenId, amount, to },
+      { address, tokenId, amount, to, chainId },
     );
 
     return {
@@ -374,17 +376,19 @@ export class Altura {
    * @param tokenId The item's tokenId
    * @param amount The amount of item to consume
    * @param from The address you want to consume an item from
+   * @param chainId Network ID of the collection (Optional)
    */
   public async consumeItem(
     address: string,
     tokenId: number,
     amount: number,
     from: string,
+    chainId?: number,
   ): Promise<{ txHash: string }> {
     const data = await this.apiCall.post<{ txHash: string }>(
       'v2/item/consume',
       { apiKey: this.apiCall.apiKey },
-      { address, tokenId, amount, from },
+      { address, tokenId, amount, from, chainId },
     );
 
     return {
