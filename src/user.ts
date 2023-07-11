@@ -68,10 +68,10 @@ export class AlturaUser {
     tokenId: number,
   ): Promise<{ balance: number }> {
     const query = {
-      chainId: '{chainId}',
+      chainId,
       userAddress: this.address,
-      collectionAddress: '{collectionAddress}',
-      tokenId: '{tokenId}',
+      collectionAddress,
+      tokenId,
     };
     const json = await this.apiCall.get<{ balance: number }>(`v2/item/balance/`, query);
 
