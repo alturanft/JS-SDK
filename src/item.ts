@@ -6,10 +6,12 @@ import { eventFromJson, holderInstanceFromJson, updatedItemInstanceFromJson } fr
 export class AlturaItem {
   collectionAddress: string;
   tokenId: number;
+  chainId: number;
 
   private apiCall: ApiCall;
 
-  constructor(_collectionAddress: string, _tokenId: number, _apiCall: ApiCall) {
+  constructor(_chainId: number, _collectionAddress: string, _tokenId: number, _apiCall: ApiCall) {
+    this.chainId = _chainId;
     this.collectionAddress = _collectionAddress;
     this.tokenId = _tokenId;
     this.apiCall = _apiCall;
@@ -79,6 +81,7 @@ export class AlturaItem {
       'v2/item/add/property',
       { apiKey: this.apiCall.apiKey },
       {
+        chainId: this.chainId,
         address: this.collectionAddress,
         tokenId: this.tokenId,
         propertyName,
@@ -98,6 +101,7 @@ export class AlturaItem {
       'v2/item/delete/property',
       { apiKey: this.apiCall.apiKey },
       {
+        chainId: this.chainId,
         address: this.collectionAddress,
         tokenId: this.tokenId,
         propertyName,
@@ -116,6 +120,7 @@ export class AlturaItem {
       'v2/item/update_property',
       { apiKey: this.apiCall.apiKey },
       {
+        chainId: this.chainId,
         address: this.collectionAddress,
         tokenId: this.tokenId,
         propertyName,

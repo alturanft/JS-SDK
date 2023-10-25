@@ -5,10 +5,12 @@ import { TAlturaCollection } from './types';
 
 export class AlturaCollection {
   address: string;
+  chainId: number;
   private apiCall: ApiCall;
 
-  constructor(address: string, apiCall: ApiCall) {
+  constructor(address: string, chainId: number, apiCall: ApiCall) {
     this.address = address;
+    this.chainId = chainId;
     this.apiCall = apiCall;
   }
 
@@ -31,5 +33,19 @@ export class AlturaCollection {
       body,
     );
     return updatedCollectionInstanceFromJson(json.collection, this.apiCall);
+  }
+
+  /**
+   * Get next item id for this collection
+   */
+  public async getNextItemId(): Promise<number> {
+    const { success, nextItemId } = await this.apiCall.get<{ error: String; success: boolean; nextItemId: number }>(
+      `v2/collection/${this.address}/nextId`,
+      {
+        apiKey: this.apiCall.apiKey,
+        chainId: this.chainId,
+      },
+    );
+    return success ? nextItemId : 0;
   }
 }

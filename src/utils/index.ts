@@ -49,7 +49,7 @@ export const holderInstanceFromJson = (user: object, apiCall: ApiCall): AlturaUs
 };
 
 export const updatedItemInstanceFromJson = (item: object, apiCall: ApiCall): AlturaItem & TAlturaItem => {
-  const itemInstance: AlturaItem = new AlturaItem(item[`collectionAddress`], item[`tokenId`], apiCall);
+  const itemInstance: AlturaItem = new AlturaItem(item[`chainId`], item[`collectionAddress`], item[`tokenId`], apiCall);
   const updatedItem = itemFromJson(item);
 
   Object.entries(updatedItem).forEach(([key, value]) => {
@@ -64,7 +64,7 @@ export const itemInstanceFromJson = (
   apiCall: ApiCall,
   query: { slim: boolean },
 ): (AlturaItem & TAlturaItemSlim) | (AlturaItem & TAlturaItem) => {
-  const itemInstance: AlturaItem = new AlturaItem(item[`collectionAddress`], item[`tokenId`], apiCall);
+  const itemInstance: AlturaItem = new AlturaItem(item[`chainId`], item[`collectionAddress`], item[`tokenId`], apiCall);
 
   let alturaItem: TAlturaItem | TAlturaItemSlim;
   if (query.slim) {
@@ -85,7 +85,7 @@ export const userItemInstanceFromJson = (
   apiCall: ApiCall,
   query: { slim: boolean },
 ): (AlturaItem & TAlturaUserItemSlim) | (AlturaItem & TAlturaUserItem) => {
-  const itemInstance: AlturaItem = new AlturaItem(item[`collectionAddress`], item[`tokenId`], apiCall);
+  const itemInstance: AlturaItem = new AlturaItem(item[`chainId`], item[`collectionAddress`], item[`tokenId`], apiCall);
 
   let alturaItem: TAlturaItem | TAlturaItemSlim;
   if (query.slim) {
@@ -106,7 +106,7 @@ export const collectionInstanceFromJson = (
   collection: object,
   apiCall: ApiCall,
 ): AlturaCollection & TAlturaCollection => {
-  const collectionInstance = new AlturaCollection(collection[`address`], apiCall);
+  const collectionInstance = new AlturaCollection(collection[`address`], collection[`chainId`], apiCall);
 
   const alturaCollection = collectionFromJson(collection);
 
@@ -121,7 +121,7 @@ export const updatedCollectionInstanceFromJson = (
   collection: object,
   apiCall: ApiCall,
 ): AlturaCollection & TAlturaCollection => {
-  const collectionInstance = new AlturaCollection(collection[`address`], apiCall);
+  const collectionInstance = new AlturaCollection(collection[`address`], collection[`chainId`], apiCall);
 
   const alturaCollection = collectionFromJson(collection);
 
