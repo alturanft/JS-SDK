@@ -1,16 +1,22 @@
 import { ApiCall } from './apiCall';
-import { AlturaUser } from './user';
-import { AlturaItem } from './item';
+import type { AlturaUser } from './user';
+import type { AlturaItem } from './item';
 import { AlturaGuard } from './alturaGuard';
-import { AlturaCollection } from './collection';
-import { TAlturaCollection, TAlturaItem, TAlturaItemSlim, TAlturaUser, TAlturaGuard } from './types';
+import type { AlturaCollection } from './collection';
+import {
+  type TAlturaCollection,
+  type TAlturaItem,
+  type TAlturaItemSlim,
+  type TAlturaUser,
+  TAlturaGuard,
+} from './types';
 import {
   collectionInstanceFromJson,
   itemInstanceFromJson,
   userInstanceFromJson,
   alturaGuardInstanceFromJson,
 } from './utils';
-import { IConnector } from './connector';
+import type { IConnector } from './connector';
 
 export class Altura {
   apiCall: ApiCall;
@@ -100,6 +106,33 @@ export class Altura {
   public async getCollection(address: string): Promise<AlturaCollection & TAlturaCollection> {
     const json = await this.apiCall.get<{ collection: TAlturaCollection }>(`v2/collection/${address}`);
     return collectionInstanceFromJson(json.collection, this.apiCall);
+  }
+
+  /**
+   * Takes a collection's address and returns the holder of the collection
+   * @param address The collection's address
+   * @param chainId The chain ID of the collection
+   * @param includeItemList Whether to include the item list in the response
+   */
+  public async getCollectionHolders(address: string, chainId: number, includeItemList = false) {
+    const json = await this.apiCall.get<{
+      count: number;
+      holders: {
+        address: string;
+        totalOwned: number;
+        items?: {
+          tokenId: number;
+          balance: number;
+        }[];
+      }[];
+    }>(`collection/${chainId}/${address}/holders`, {
+      includeItemList,
+    });
+
+    return {
+      count: json.count,
+      holders: json.holders,
+    };
   }
 
   /**
@@ -199,7 +232,10 @@ export class Altura {
     };
     if (searchQuery) query = { ...query, ...searchQuery };
 
-    const json = await this.apiCall.get<{ collections: TAlturaCollection[]; count: number }>('v2/collection', query);
+    const json = await this.apiCall.get<{
+      collections: TAlturaCollection[];
+      count: number;
+    }>('v2/collection', query);
 
     return {
       collections: json.collections.map((c) => collectionInstanceFromJson(c, this.apiCall)),
