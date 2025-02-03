@@ -1,5 +1,6 @@
-import { ethers } from 'ethers';
-import { BigNumber } from 'ethers';
+import type { ethers } from 'ethers';
+import type { BigNumber } from 'ethers';
+
 export interface IConnector {
   /**
    * The account address discovered by querying the user's wallet in `IConnector#connect`

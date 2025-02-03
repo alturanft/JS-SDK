@@ -1,50 +1,104 @@
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import WalletConnectProvider from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
-import { IConnector } from './type';
-import { BigNumber } from 'ethers';
-export class WalletConnectConnector implements IConnector {
-  private _provider: ethers.providers.Web3Provider | null = null;
+import type { IConnector } from './type';
+
+export interface WalletConnectV2ConnectorOptions {
+  projectId: string;
+  chains?: number[];
+  rpc?: Record<number, string>;
+  optionalChains?: number[];
+}
+
+export class WalletConnectV2Connector implements IConnector {
+  private wcProvider: WalletConnectProvider | null = null;
+  private _ethersProvider: ethers.providers.Web3Provider | null = null;
+  private options: WalletConnectV2ConnectorOptions;
   private _address: string | null = null;
 
-  public get provider() {
-    return this._provider;
+  constructor(options: WalletConnectV2ConnectorOptions) {
+    if (!options.projectId) {
+      throw new Error('WalletConnect v2 requires a valid projectId.');
+    }
+    this.options = options;
   }
-  public get address() {
+
+  get address(): string | null {
     return this._address;
   }
 
-  /**
-   * A basic constructor for connecting to wallets with WalletConnect
-   * @param walletConnectProvider The provider used to connect using WalletConnect
-   */
-  constructor(walletConnectProvider: WalletConnectProvider) {
-    this._provider = new ethers.providers.Web3Provider(walletConnectProvider);
+  get provider(): ethers.providers.Web3Provider | null {
+    return this._ethersProvider;
   }
 
-  public async connect(): Promise<string | null> {
-    this._address = (await this.provider?.getSigner()?.getAddress()) || null;
-    return this.address;
+  async connect(): Promise<string | null> {
+    this.wcProvider = await WalletConnectProvider.init({
+      projectId: this.options.projectId,
+      chains: this.options.chains ?? [1],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      optionalChains: (this.options.optionalChains ?? []) as unknown,
+      rpcMap: this.options.rpc ?? {},
+      showQrModal: true,
+    });
+    await this.wcProvider.enable();
+
+    this._ethersProvider = new ethers.providers.Web3Provider(this.wcProvider);
+
+    const accounts: string[] = await this.wcProvider.request({
+      method: 'eth_accounts',
+    });
+    this._address = accounts[0] || null;
+    return this._address;
   }
 
-  public async sign(message: string): Promise<string | null> {
-    return this.provider?.getSigner()?.signMessage(message) || null;
+  async sign(message: string) {
+    if (!this._ethersProvider) {
+      throw new Error('Wallet not connected');
+    }
+    const signer = this._ethersProvider.getSigner();
+    return await signer.signMessage(message);
   }
-  public async getBalance(): Promise<BigNumber | null> {
-    return this.address ? this.provider?.getBalance(this.address) || null : null;
+
+  async getBalance() {
+    if (!this._ethersProvider || !this._address) {
+      throw new Error('Wallet not connected');
+    }
+    return await this._ethersProvider.getBalance(this._address);
   }
-  public async sendTransaction(transaction: any): Promise<any | null> {
-    return this.provider?.getSigner()?.sendTransaction(transaction) || null;
+
+  async sendTransaction(transaction: Record<string, unknown>) {
+    if (!this._ethersProvider) {
+      throw new Error('Wallet not connected');
+    }
+    const signer = this._ethersProvider.getSigner();
+    return await signer.sendTransaction(transaction);
   }
-  public async getNetwork(): Promise<any | null> {
-    return this.provider?.getNetwork() || null;
+
+  async getNetwork() {
+    if (!this._ethersProvider) {
+      throw new Error('Wallet not connected');
+    }
+    return await this._ethersProvider.getNetwork();
   }
-  public async getGasPrice(): Promise<BigNumber | null> {
-    return this.provider?.getGasPrice() || null;
+
+  async getGasPrice() {
+    if (!this._ethersProvider) {
+      throw new Error('Wallet not connected');
+    }
+    return await this._ethersProvider.getGasPrice();
   }
-  public async getFeeData(): Promise<any | null> {
-    return this.provider?.getFeeData() || null;
+
+  async getFeeData() {
+    if (!this._ethersProvider) {
+      throw new Error('Wallet not connected');
+    }
+    return await this._ethersProvider.getFeeData();
   }
-  public async getBlockNumber(): Promise<number | null> {
-    return this.provider?.getBlockNumber() || null;
+
+  async getBlockNumber() {
+    if (!this._ethersProvider) {
+      throw new Error('Wallet not connected');
+    }
+    return await this._ethersProvider.getBlockNumber();
   }
 }
